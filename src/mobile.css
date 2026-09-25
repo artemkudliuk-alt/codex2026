@@ -70,7 +70,7 @@
     padding: calc(96 * var(--m)) calc(20 * var(--m)) max(calc(28 * var(--m)), env(safe-area-inset-bottom));
     overflow-y: auto; /* a very short screen scrolls instead of squeezing the items */
     overscroll-behavior: contain;
-    background: var(--navy-900);
+    background: linear-gradient(160deg, var(--navy-900) 45%, var(--navy-800) 100%); /* a touch of depth */
     color: var(--white);
     clip-path: circle(0 at calc(100% - 56 * var(--m)) calc(32 * var(--m)));
     visibility: hidden;

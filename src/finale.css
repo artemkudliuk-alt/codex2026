@@ -165,6 +165,7 @@
 .footer {
   position: relative;
   z-index: 3;
+  background: linear-gradient(180deg, rgb(35 48 94 / 0) 55%, rgb(35 48 94 / 0.55) 100%); /* depth in brand navy-800 */
   height: calc(1080 * var(--uw));
 }
 .footer__nav {

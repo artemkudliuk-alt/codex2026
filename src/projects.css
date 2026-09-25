@@ -131,7 +131,7 @@
   background: rgb(255 255 255 / 0.25);
   box-shadow:
     0 0 0 1px rgb(22 31 53 / 0.08),
-    0 calc(6 * var(--uw)) calc(18 * var(--uw)) rgb(5 13 31 / 0.1);
+    0 calc(6 * var(--uw)) calc(18 * var(--uw)) rgb(35 48 94 / 0.14);
   opacity: 0;
   scale: 0.94;
   translate: 0 calc(24 * var(--uw));

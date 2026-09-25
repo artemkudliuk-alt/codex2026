@@ -138,7 +138,7 @@ export default function Hero() {
       .to(video, {
         ...rectVars(COL),
         borderRadius: () => COL.r * su(),
-        boxShadow: () => `0px ${22 * su()}px ${48 * su()}px rgba(5, 13, 31, 0.3)`,
+        boxShadow: () => `0px ${22 * su()}px ${48 * su()}px rgba(35, 48, 94, 0.38)`,
         duration: 1,
         ease: 'power1.inOut',
       }, 1.15)
