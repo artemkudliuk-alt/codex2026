@@ -2,7 +2,7 @@
    Normal-flow parts: layout px x --m (by width). Pinned full-screen scenes (hero, 02, 03):
    x --mu, a 390 x 844 stage fitted into the screen. Loaded after every section's own CSS. */
 
-.header__dots,
+.header__menu,
 .menu,
 .proj__toggle,
 .swipe { display: none; }
@@ -18,23 +18,49 @@
   .header__nav,
   .header__actions { display: none; }
   .header__logo { left: calc(50% - 47.5 * var(--m)); width: calc(95 * var(--m)); }
-  .header__dots {
-    display: grid;
-    grid-template-columns: repeat(3, calc(5 * var(--m)));
-    gap: calc(3.5 * var(--m));
-    place-content: center;
+  /* the logo stays still on phones (a tap would leave the hover turn on) */
+  .header__logo:hover .header__mark { rotate: none; }
+  /* menu button: a light horizontal plate with the word (client), like the desktop language pill */
+  .header__menu {
+    display: flex;
+    align-items: center;
+    gap: calc(9 * var(--m));
     right: calc(16 * var(--m));
-    width: calc(44 * var(--m));
-    height: calc(44 * var(--m));
-    padding: 0;
-    border: 0;
-    background: none;
+    min-height: 44px; /* touch target */
+    padding: 0 calc(18 * var(--m));
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.05);
+    color: var(--white);
+    font: inherit;
+    font-size: calc(14 * var(--m));
+    font-weight: 600;
+    letter-spacing: 0.04em;
     cursor: pointer;
+    transition: background-color 0.4s var(--ease), scale 0.4s var(--ease);
   }
-  .header__dots i { width: calc(5 * var(--m)); height: calc(5 * var(--m)); border-radius: 50%; background: var(--white); transition: scale 0.4s var(--ease); }
-  .header__dots:active i { scale: 0.7; }
+  .header__menu:active { background: rgb(255 255 255 / 0.16); scale: 0.96; }
+  /* equalizer icon: four pills; 1 and 3 short, 2 and 4 long, then they slowly swap, together */
+  .header__eq {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: round(calc(1.2 * var(--m)), 1px); /* whole pixels: all four bars rasterise the same */
+    width: calc(12.8 * var(--m));
+  }
+  .header__eq i {
+    width: 55%;
+    height: max(2px, round(calc(2.4 * var(--m)), 1px));
+    border-radius: 99px;
+    background: currentColor; /* solid: a hairline outline this small renders unevenly */
+    animation: eq-grow 4.2s ease-in-out infinite alternate;
+  }
+  .header__eq i:nth-child(even) { width: 100%; animation-name: eq-shrink; }
+  @keyframes eq-grow { to { width: 100%; } }
+  @keyframes eq-shrink { to { width: 55%; } }
+  @media (prefers-reduced-motion: reduce) { .header__eq i { animation: none; } }
 
-  /* Menu: opens as a circle from the dots, the mark lands in the centre, items rise in turn */
+  /* Menu: opens as a circle from the menu plate, the mark lands in the centre, items rise in turn */
   .menu {
     position: fixed;
     inset: 0;
@@ -46,12 +72,12 @@
     overscroll-behavior: contain;
     background: var(--navy-900);
     color: var(--white);
-    clip-path: circle(0 at calc(100% - 38 * var(--m)) calc(34 * var(--m)));
+    clip-path: circle(0 at calc(100% - 56 * var(--m)) calc(32 * var(--m)));
     visibility: hidden;
     transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.84, 0), visibility 0s linear 0.7s;
   }
   .menu.is-open {
-    clip-path: circle(150% at calc(100% - 38 * var(--m)) calc(34 * var(--m)));
+    clip-path: circle(150% at calc(100% - 56 * var(--m)) calc(32 * var(--m)));
     visibility: visible;
     transition: clip-path 0.9s var(--ease), visibility 0s;
   }
@@ -277,10 +303,10 @@
   .flow { height: calc(64 * var(--m) + 680 * var(--mu) + var(--stick)); }
   .flow__sticky { height: calc(64 * var(--m) + 680 * var(--mu)); }
   .flow__sticky { --t0: calc(64 * var(--m) - 34 * var(--mu)); }
-  .flow__cover {
-    left: calc(50% - 495 * var(--mu));
+  .flow__cover { /* energy-m.mp4 is the centre 760 x 1080 of the stream, at the same scale as before */
+    left: calc(50% - 218 * var(--mu));
     top: calc(var(--t0) + 40 * var(--mu)); /* the stream starts right under the subline */
-    width: calc(990 * var(--mu));
+    width: calc(436 * var(--mu));
     height: calc(620 * var(--mu));
   }
   .flow__video { object-fit: cover; }
@@ -650,8 +676,7 @@
     margin: calc(24 * var(--m)) calc(20 * var(--m)) 0;
     font-size: calc(13 * var(--m));
   }
-  .footer__credit { font-size: calc(11 * var(--m)); }
-  .footer__copy { position: static; order: 1; margin: calc(14 * var(--m)) calc(20 * var(--m)) 0; font-size: calc(13 * var(--m)); }
+  .footer__credit { position: static; margin: calc(16 * var(--m)) calc(20 * var(--m)) 0; font-size: calc(11 * var(--m)); }
   .footer__mark {
     left: auto;
     right: calc(-120 * var(--m));

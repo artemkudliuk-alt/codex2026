@@ -119,12 +119,13 @@ export default function Finale() {
         <p className="footer__disclaimer">
           {t('Діяльність Енергетичного кооперативу не є діяльністю інституту спільного інвестування, діяльністю з управління активами, діяльністю на ринку капіталу чи організованих товарних ринках, а також не є професійною діяльністю на ринках фінансових послуг. Кооператив не здійснює публічного залучення коштів і не гарантує отримання доходу.', 'The Energy Cooperative is not a collective investment institution and does not manage assets, operate on the capital market or organised commodity markets, or provide professional financial services. The cooperative does not raise funds publicly and does not guarantee income.')}
         </p>
-        <p className="footer__copy">© 2026. Codex Energy</p>
+        {/* one line, one type: copyright, policy, offer in a row; the credit sits apart by the mark */}
         <div className="footer__legal">
-          <a href="#">{t('Юридичні умови', 'Legal terms')}</a>
+          <span className="footer__copy">© 2026. Codex Energy</span>
           <a href="#">{t('Політика конфіденційності', 'Privacy policy')}</a>
-          <span className="footer__credit">{t('Розроблено NextWeb', 'Developed by NextWeb')}</span>
+          <a href="#">{t('Публічна оферта', 'Public offer')}</a>
         </div>
+        <span className="footer__credit">Made in NextWeb</span>
         <img className="footer__mark" src="/footer/mark.svg" alt="" aria-hidden="true" />
         <button className="footer__top" onClick={() => lenis.scrollTo(0, { duration: 2.2 })}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

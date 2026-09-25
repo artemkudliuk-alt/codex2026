@@ -55,11 +55,16 @@ export default function System() {
     const small = canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 2) <= 1500
     const frameSet = units.mobile ? 'm/' : small ? '1440/' : ''
     const imgs = Array.from({ length: FRAMES }, () => new Image())
-    const load = (from, to) => Promise.all(imgs.slice(from, to).map((img, k) =>
-      loadImage(img, frameSrc(from + k, frameSet)).then(() => draw(current))))
+    const loadList = (list) => Promise.all(list.map((i) => loadImage(imgs[i], frameSrc(i, frameSet)).then(() => draw(current))))
+    const load = (from, to) => loadList(Array.from({ length: Math.min(to, FRAMES) - from }, (_, k) => from + k))
     critical.push(load(0, FIRST))
+    // Every 2nd frame first: the scrub already plays through (draw() takes the nearest loaded
+    // frame below), then the in-between frames go to the end of the queue, after section 03's video.
+    const byEight = async (list) => { for (let i = 0; i < list.length; i += 8) await loadList(list.slice(i, i + 8)) }
+    const rest = Array.from({ length: FRAMES - FIRST }, (_, k) => FIRST + k)
     later(async () => {
-      for (let i = FIRST; i < FRAMES; i += 8) await load(i, i + 8)
+      await byEight(rest.filter((i) => i % 2 === 0))
+      later(() => byEight(rest.filter((i) => i % 2 === 1)))
     })
     let current = 0
     let drawn = -1

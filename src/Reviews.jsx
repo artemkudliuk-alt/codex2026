@@ -47,7 +47,7 @@ export default function Reviews() {
         <div className={`reviews__track${instant ? ' is-instant' : ''}`} style={{ '--pos': pos }} onTransitionEnd={onEnd}>
           {[0, 1, 2].flatMap((copy) => REVIEWS().map((r, i) => (
             <article key={`${copy}-${i}`} className="review" style={{ '--i': i }} aria-hidden={copy !== 1 || undefined}>
-              <img className="review__photo" src={r.photo} alt="" />
+              <img className="review__photo" src={r.photo} alt="" loading="lazy" decoding="async" />
               <blockquote className="review__quote">{r.quote}</blockquote>
               <div className="review__who">
                 <p className="review__name">{r.name}</p>

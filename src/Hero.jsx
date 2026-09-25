@@ -229,9 +229,10 @@ export default function Hero() {
 
         <div className="hero__video">
           {/* AV1 where the browser plays it (about half the bytes), H.264 otherwise */}
-          <video poster="/video/hero-poster.webp" autoPlay muted loop playsInline preload="auto">
-            <source src="/video/hero.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"' />
-            <source src="/video/hero.mp4" type="video/mp4" />
+          {/* phones: the centre 720 x 1080 (every phone phase is portrait), about a third of the bytes */}
+          <video poster={units.mobile ? '/video/hero-m-poster.webp' : '/video/hero-poster.webp'} autoPlay muted loop playsInline preload="auto">
+            <source src={units.mobile ? '/video/hero-m.av1.mp4' : '/video/hero.av1.mp4'} type='video/mp4; codecs="av01.0.08M.10"' />
+            <source src={units.mobile ? '/video/hero-m.mp4' : '/video/hero.mp4'} type="video/mp4" />
           </video>
           <div className="hero__scrim hero__scrim--v" />
           <div className="hero__scrim hero__scrim--l" />

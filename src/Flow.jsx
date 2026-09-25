@@ -183,8 +183,9 @@ export default function Flow() {
         <div className="flow__cover">
           {/* preload none: it buffers in the load queue (load.js), after the hero and section 02 */}
           <video className="flow__video" muted loop playsInline preload="none" aria-hidden="true">
-            <source src="/video/energy.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"' />
-            <source src="/video/energy.mp4" type="video/mp4" />
+            {/* phones: the centre 760 x 1080, the part of the stream a phone shows */}
+            <source src={units.mobile ? '/video/energy-m.av1.mp4' : '/video/energy.av1.mp4'} type='video/mp4; codecs="av01.0.08M.10"' />
+            <source src={units.mobile ? '/video/energy-m.mp4' : '/video/energy.mp4'} type="video/mp4" />
           </video>
           <canvas className="flow__canvas" aria-hidden="true" />
         </div>

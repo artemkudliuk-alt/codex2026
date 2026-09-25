@@ -132,7 +132,7 @@ export default function Projects() {
 
         <div className="proj__photos" aria-hidden="true">
           {projects.map((p, i) => (
-            <img key={p.key} className={i === active ? 'is-active' : ''} src={p.photo} alt="" />
+            <img key={p.key} className={i === active ? 'is-active' : ''} src={p.photo} alt="" loading="lazy" decoding="async" />
           ))}
         </div>
 

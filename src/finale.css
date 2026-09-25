@@ -270,19 +270,26 @@
   line-height: 1.6;
   color: rgb(255 255 255 / 0.42);
 }
-.footer__copy,
-.footer__legal {
+.footer__legal,
+.footer__credit {
   position: absolute;
-  top: calc(990 * var(--uw));
-  font-size: calc(21 * var(--uw));
+  top: calc(994 * var(--uw));
+  z-index: 1;
+  font-size: calc(16 * var(--uw)); /* the credit's size for the whole line (client) */
+  font-weight: 500;
   line-height: 1.5;
-  color: rgb(255 255 255 / 0.6);
 }
-.footer__copy { left: calc(120 * var(--uw)); font-weight: 500; }
-.footer__legal { left: calc(560 * var(--uw)); z-index: 1; display: flex; align-items: baseline; gap: calc(48 * var(--uw)); font-size: calc(22 * var(--uw)); } /* clear of the turning mark */
+/* copyright, policy, offer: one after another from the left edge */
+.footer__legal { left: calc(120 * var(--uw)); display: flex; align-items: baseline; gap: calc(40 * var(--uw)); color: rgb(255 255 255 / 0.6); }
 .footer__legal a { transition: color 0.3s var(--ease); }
 .footer__legal a:hover { color: var(--white); }
-.footer__credit { font-size: calc(16 * var(--uw)); color: rgb(255 255 255 / 0.4); }
+/* the credit: a related but different face, close to the turning mark and clear of its reach (r 300 around 1860 / 1040) */
+.footer__credit {
+  right: calc(410 * var(--uw));
+  font-family: Manrope, Montserrat, system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  color: rgb(255 255 255 / 0.42);
+}
 
 /* back to top: vertical, bottom-left of the footer (x1.5 of the first version, client) */
 .footer__top {

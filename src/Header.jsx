@@ -100,7 +100,7 @@ function LangToggle() {
 // Over the white sections the glass gets dense, so the white menu stays readable.
 const SOCIALS = ['instagram', 'facebook', 'telegram', 'youtube', 'linkedin']
 
-// Phones: the 9 dots open a full-screen menu; the plate slides apart from the button and the
+// Phones: the "Меню" plate opens a full-screen menu; the plate slides apart from the button and the
 // mark lands in the centre, then the items rise one by one. Scroll is held while it is open.
 function Menu({ open, onClose }) {
   useEffect(() => {
@@ -211,8 +211,10 @@ export default function Header() {
         </a>
         <a className="btn btn--primary header__cta" href="#">{t('Залишити заявку', 'Apply now')}</a>
       </div>
-      <button className="header__dots" onClick={() => setMenu(true)} aria-label={t('Меню', 'Menu')} aria-expanded={menu}>
-        {Array.from({ length: 9 }, (_, i) => <i key={i} />)}
+      <button className="header__menu" onClick={() => setMenu(true)} aria-expanded={menu}>
+        {/* four outlined bars that breathe slowly, like an equalizer */}
+        <span className="header__eq" aria-hidden="true"><i /><i /><i /><i /></span>
+        {t('Меню', 'Menu')}
       </button>
     </header>
     <Menu open={menu} onClose={closeMenu} />

@@ -26,7 +26,7 @@ export default function Media() {
       <div className="media__grid" ref={row}>
         {POSTS().map((p, i) => (
           <a key={p.source} className="post" href={p.href} target="_blank" rel="noreferrer" style={{ '--i': i }}>
-            <span className="post__photo"><img src={p.photo} alt="" /></span>
+            <span className="post__photo"><img src={p.photo} alt="" loading="lazy" decoding="async" /></span>
             <span className="post__source">{p.source}</span>
             <span className="post__title">{p.title}</span>
           </a>

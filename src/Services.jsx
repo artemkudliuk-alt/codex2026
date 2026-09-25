@@ -48,7 +48,7 @@ export default function Services() {
               <div className="service__rest" aria-hidden={i === active}>
                 <span className="service__num">{n}</span>
                 <div className="service__icon" style={{ '--mask': `url(/services/i${i + 1}-mask.webp)` }}>
-                  <img src={`/services/i${i + 1}.webp`} alt="" />
+                  <img src={`/services/i${i + 1}.webp`} alt="" loading="lazy" decoding="async" />
                   <span className="service__flow"><i /><i /><i /></span>
                 </div>
                 <p className="service__sub">{c.sub}</p>
@@ -57,7 +57,7 @@ export default function Services() {
 
               {/* expanded: photo card, fixed 810 wide so the text never reflows while it opens */}
               <div className="service__open" aria-hidden={i !== active}>
-                <img className="service__photo" src={`/services/p${i + 1}.webp`} alt="" />
+                <img className="service__photo" src={`/services/p${i + 1}.webp`} alt="" loading="lazy" decoding="async" />
                 <span className="service__num">{n}</span>
                 <h3 className="service__open-title">{c.title.map((l) => <span key={l}>{l}</span>)}</h3>
                 <p className="service__open-sub">{c.sub}</p>
