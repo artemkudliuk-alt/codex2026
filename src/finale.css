@@ -25,7 +25,7 @@
 .finale__warm { /* a touch of yellow in the magma (client) */
   position: absolute;
   inset: 0;
-  background: radial-gradient(52% 58% at 49.5% 92%, rgb(255 196 60 / 0.6), rgb(255 170 40 / 0.25) 55%, transparent 75%);
+  background: radial-gradient(52% 58% at 49.5% 92%, rgb(255 255 255 / 0.5), rgb(231 82 15 / 0.3) 55%, transparent 75%); /* palette only: white over the orange reads warm-light */
   mix-blend-mode: overlay;
   pointer-events: none;
 }
@@ -60,7 +60,7 @@
   width: 32%;
   height: 34%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(255 214 170 / 0.55), rgb(231 82 15 / 0.18) 60%, transparent);
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.5), rgb(231 82 15 / 0.22) 60%, transparent);
   mix-blend-mode: screen;
   animation: sun-pulse 13s ease-in-out infinite; /* half speed (client) */
 }

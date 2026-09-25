@@ -95,8 +95,8 @@ export function createFlames(canvas, getRim) {
       const x1 = cx + Math.cos(ray.a) * (r + len)
       const y1 = cy + Math.sin(ray.a) * (r + len)
       const g = ctx.createLinearGradient(x0, y0, x1, y1)
-      g.addColorStop(0, `rgba(255,236,210,${(0.32 * breath).toFixed(3)})`)
-      g.addColorStop(0.35, `rgba(180,210,255,${(0.16 * breath).toFixed(3)})`)
+      g.addColorStop(0, `rgba(255,255,255,${(0.32 * breath).toFixed(3)})`)
+      g.addColorStop(0.35, `rgba(133,177,223,${(0.16 * breath).toFixed(3)})`)
       g.addColorStop(1, 'rgba(133,177,223,0)')
       ctx.strokeStyle = g
       ctx.lineWidth = r * (0.012 + 0.018 * breath)
@@ -117,7 +117,7 @@ export function createFlames(canvas, getRim) {
       ctx.rotate(a + Math.PI / 2)
       ctx.scale(1, len / wid)
       const g = ctx.createRadialGradient(0, 0, 0, 0, 0, wid)
-      const core = tint > 0.7 ? '133,177,223' : '255,140,60'
+      const core = tint > 0.7 ? '133,177,223' : '231,82,15' // brand blue-300 / orange
       g.addColorStop(0, `rgba(${core},${(0.55 * flick).toFixed(3)})`)
       g.addColorStop(1, `rgba(${core},0)`)
       ctx.fillStyle = g
