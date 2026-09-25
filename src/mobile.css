@@ -17,7 +17,7 @@
   .header { height: calc(64 * var(--m)); }
   .header__nav,
   .header__actions { display: none; }
-  .header__logo { left: calc(50% - 47.5 * var(--m)); width: calc(95 * var(--m)); }
+  .header__logo { left: calc(20 * var(--m)); width: calc(95 * var(--m)); } /* left, on the content edge (client) */
   /* the logo stays still on phones (a tap would leave the hover turn on) */
   .header__logo:hover .header__mark { rotate: none; }
   /* menu button: a light horizontal plate with the word (client), like the desktop language pill */
