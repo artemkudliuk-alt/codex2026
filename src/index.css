@@ -1,0 +1,53 @@
+:root {
+  --navy-900: #161f35;
+  --navy-800: #23305e;
+  --blue-500: #3e69b1;
+  --blue-300: #85b1df;
+  --orange: #e7520f;
+  --grey: #ebebeb;
+  --white: #fff;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: Montserrat, system-ui, sans-serif;
+  color: var(--navy-900);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+/* Stopped Lenis already blocks wheel/touch; keep the scrollbar so the width never jumps. */
+html.lenis.lenis-stopped:not(.lenis-autoToggle) { overflow: visible; }
+body, h1, h2, h3, p, figure { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img, video { display: block; }
+
+/* 1920x1080 design stage fitted into the viewport; children use calc(N * var(--u)). */
+.stage {
+  position: absolute;
+  left: calc(50% - 960 * var(--u));
+  top: calc(50% - 540 * var(--u));
+  width: calc(1920 * var(--u));
+  height: calc(1080 * var(--u));
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* language switch: a short navy curtain while the page remounts in the other language */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--navy-900);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease);
+}
+html.lang-switch body::after { opacity: 1; pointer-events: auto; }

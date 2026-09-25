@@ -1,0 +1,127 @@
+/* Hero, Figma 4:2 / 4:34 / 4:51. Stage sizes are design px x --u (1920x1080 fitted). */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--white);
+}
+.hero__inner { position: absolute; inset: 0; }
+
+.hero__stage--back { z-index: 1; }
+.hero__stage--front { z-index: 4; pointer-events: none; }
+.hero__stage--front > * { pointer-events: auto; }
+
+/* Video: full-bleed, then GSAP shrinks it into the card */
+.hero__video {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: 0px 0px 0px rgba(5, 13, 31, 0);
+}
+.hero__video video { width: 100%; height: 100%; object-fit: cover; }
+
+.hero__scrim { position: absolute; inset: 0; pointer-events: none; }
+
+.hero__scrim--v {
+  background: linear-gradient(180deg, rgb(22 31 53 / 0.86) 0%, rgb(22 31 53 / 0.28) 55%, rgb(22 31 53 / 0.72) 100%);
+}
+.hero__scrim--l {
+  right: auto;
+  width: 65.625%; /* 1260 / 1920 */
+  background: linear-gradient(90deg, rgb(22 31 53 / 0.88) 0%, rgb(22 31 53 / 0.52) 52%, rgb(22 31 53 / 0) 100%);
+}
+
+/* Phase 01 copy */
+.hero__copy {
+  position: absolute;
+  left: calc(120 * var(--uw) - var(--sx)); /* on the header logo's edge on any screen (client) */
+  top: calc(351 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(36 * var(--u));
+  color: var(--white);
+}
+.hero__copy h1 {
+  width: calc(1338 * var(--u)); /* layout sizes +5% by client: 1274 / 94 / 90 */
+  font-size: calc(98.7 * var(--u));
+  line-height: calc(94.5 * var(--u));
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+.hero__copy p {
+  width: calc(1065 * var(--u)); /* layout 1014 / 33, +5% */
+  font-size: calc(34.65 * var(--u));
+  line-height: 1.58;
+  color: rgb(255 255 255 / 0.82);
+}
+.hero__ctas { display: flex; gap: calc(21 * var(--u)); }
+.hero__btn {
+  font-size: calc(23 * var(--u));
+  line-height: 1.2;
+  padding: calc(25 * var(--u)) calc(44 * var(--u));
+}
+.btn--ghost {
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.24);
+  color: var(--white);
+  transition: transform 0.5s var(--ease), background-color 0.4s var(--ease);
+}
+.btn--ghost:hover { background: rgb(255 255 255 / 0.14); }
+
+.hero__badge {
+  position: absolute;
+  left: calc(1357 * var(--u));
+  top: calc(761 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+  padding: calc(29 * var(--u)) 0;
+  white-space: nowrap;
+}
+.hero__badge-label {
+  font-size: calc(25 * var(--u));
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--blue-300);
+}
+.hero__badge-value {
+  font-size: calc(55 * var(--u));
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+/* Phase 03 collage + statement */
+.hero__card {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+}
+.hero__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(16 * var(--u));
+  box-shadow: 0 calc(12 * var(--u)) calc(30 * var(--u)) rgb(5 13 31 / 0.16);
+}
+
+.hero__statement {
+  position: absolute;
+  left: calc(120 * var(--uw) - var(--sx));
+  top: calc(856 * var(--u));
+  width: calc(1680 * var(--u));
+  font-size: calc(68 * var(--u));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--navy-900);
+  visibility: hidden;
+}
+.hero__statement span { color: var(--blue-500); }

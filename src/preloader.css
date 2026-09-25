@@ -1,0 +1,7 @@
+/* Preloader (Renuvion mechanic): full-screen SVG - navy with the logo cut out as a mask. */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+.preloader__svg { position: absolute; inset: 0; width: 100%; height: 100%; }

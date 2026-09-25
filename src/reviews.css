@@ -1,0 +1,121 @@
+/* Section 07b, Figma 167:2 (1920 x 640). Normal-flow section: design px x --uw. */
+.reviews {
+  position: relative;
+  height: calc(640 * var(--uw));
+  background: var(--white);
+  color: var(--navy-900);
+}
+.reviews__eyebrow {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(70 * var(--uw));
+  font-size: calc(23 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.reviews__h2 {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(117 * var(--uw));
+  font-size: calc(60 * var(--uw));
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+.reviews__controls {
+  position: absolute;
+  right: calc(120 * var(--uw));
+  top: calc(117 * var(--uw));
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--uw));
+}
+.reviews__count {
+  margin-right: calc(16 * var(--uw));
+  font-size: calc(18 * var(--uw));
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.reviews__btn {
+  display: grid;
+  place-items: center;
+  width: calc(64 * var(--uw));
+  height: calc(64 * var(--uw));
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.5s var(--ease), background-color 0.4s var(--ease), border-color 0.4s var(--ease), color 0.4s var(--ease);
+}
+.reviews__btn svg { width: calc(24 * var(--uw)); height: calc(24 * var(--uw)); transition: translate 0.5s var(--ease); }
+.reviews__btn--prev { border: 1.5px solid rgb(22 31 53 / 0.4); background: none; color: rgb(22 31 53 / 0.6); }
+.reviews__btn--prev:hover { border-color: var(--navy-900); color: var(--navy-900); }
+.reviews__btn--prev:hover svg { translate: calc(-3 * var(--uw)) 0; }
+.reviews__btn--next { border: 0; background: var(--orange); color: var(--white); }
+.reviews__btn--next:hover svg { translate: calc(3 * var(--uw)) 0; }
+.reviews__btn:active { transform: scale(0.94); }
+
+/* Track: three cards visible, slides one card (544 + 24) at a time */
+.reviews__viewport {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(230 * var(--uw));
+  width: calc(1680 * var(--uw));
+  height: calc(350 * var(--uw));
+  overflow: hidden;
+  border-radius: calc(24 * var(--uw));
+}
+.reviews__track {
+  display: flex;
+  gap: calc(24 * var(--uw));
+  translate: calc(var(--pos) * -568 * var(--uw)) 0;
+  transition: translate 0.9s var(--ease);
+}
+.reviews__track.is-instant { transition: none; }
+
+.review {
+  position: relative;
+  flex: none;
+  width: calc(544 * var(--uw));
+  height: calc(350 * var(--uw));
+  padding: calc(32 * var(--uw)) calc(32 * var(--uw)) 0 calc(238 * var(--uw));
+  border-radius: calc(24 * var(--uw));
+  overflow: hidden;
+  background: var(--grey);
+  opacity: 0;
+  translate: 0 calc(30 * var(--uw));
+  transition: opacity 0.8s var(--ease), translate 0.9s var(--ease);
+  transition-delay: calc(var(--i) * 0.1s);
+}
+.reviews.is-in .review { opacity: 1; translate: 0 0; }
+.review__photo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(206 * var(--uw));
+  height: 100%;
+  object-fit: cover;
+}
+.review__quote {
+  margin: 0;
+  font-size: calc(21 * var(--uw));
+  font-weight: 500;
+  line-height: calc(31 * var(--uw));
+}
+.review__who { /* name + role sit on the bottom edge; a 2-line role lifts the name (as in the layout) */
+  position: absolute;
+  left: calc(238 * var(--uw));
+  right: calc(32 * var(--uw));
+  bottom: calc(32 * var(--uw));
+}
+.review__name { font-size: calc(21 * var(--uw)); font-weight: 700; }
+.review__role {
+  margin-top: calc(6 * var(--uw));
+  font-size: calc(17 * var(--uw));
+  font-weight: 500;
+  line-height: calc(24 * var(--uw));
+  color: var(--orange);
+}
+.review:nth-child(3n + 2) .review__role { color: var(--blue-500); }

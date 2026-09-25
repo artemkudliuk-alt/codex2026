@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Every load starts from the top with the intro: the browser must not restore the scroll.
+      history.scrollRestoration = 'manual'
+      addEventListener('beforeunload', () => scrollTo(0, 0))
+    </script>
+    <title>Codex Energy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="/video/hero-poster.webp" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

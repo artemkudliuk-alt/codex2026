@@ -1,0 +1,138 @@
+/* Section 05, Figma 68:35. Normal-flow section: design px x --uw. */
+.why {
+  position: relative;
+  min-height: calc(1080 * var(--uw));
+  padding: calc(150 * var(--uw)) calc(120 * var(--uw)) calc(120 * var(--uw));
+  overflow: hidden;
+  background: var(--white);
+  color: var(--navy-900);
+}
+
+/* Giant mark: the shape masks a brand gradient that slowly flows through it (~7s) */
+.why__mark {
+  position: absolute;
+  left: calc(-106 * var(--uw));
+  top: calc(359 * var(--uw));
+  width: calc(1000 * var(--uw));
+  height: calc(1000 * var(--uw));
+  opacity: 0.55;
+  background: linear-gradient(135deg, /* brand colours only, no white (client) */
+    var(--blue-500) 0%, var(--blue-300) 25%, var(--orange) 55%, var(--blue-300) 80%, var(--blue-500) 100%);
+  background-size: 250% 250%;
+  -webkit-mask: url(/why/mark-mask.svg) center / contain no-repeat;
+  mask: url(/why/mark-mask.svg) center / contain no-repeat;
+  animation: why-flow 7s ease-in-out infinite alternate;
+}
+@keyframes why-flow {
+  from { background-position: 0% 0%; }
+  to { background-position: 100% 100%; }
+}
+
+.why__intro { position: relative; }
+.why__eyebrow {
+  font-size: calc(23 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.why__h2 {
+  margin-top: calc(12 * var(--uw));
+  font-size: calc(62 * var(--uw));
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+/* Accordion */
+.why__list {
+  position: absolute;
+  top: calc(150 * var(--uw));
+  left: calc(1000 * var(--uw));
+  width: calc(800 * var(--uw));
+}
+.why__item { border-top: 1px solid rgb(22 31 53 / 0.2); }
+.why__item:last-of-type { border-bottom: 1px solid rgb(22 31 53 / 0.2); }
+
+.why__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(40 * var(--uw));
+  width: 100%;
+  padding: calc(30 * var(--uw)) 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.why__title {
+  font-size: calc(34 * var(--uw));
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  transition: color 0.4s var(--ease);
+}
+.why__item.is-long .why__title { font-size: calc(29 * var(--uw)); }
+.why__head:hover .why__title { color: var(--blue-500); }
+/* open item: orange title, an underline draws left to right (client) */
+.why__title { position: relative; padding-bottom: calc(6 * var(--uw)); }
+.why__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease);
+}
+.why__item.is-open .why__title { color: var(--orange); }
+.why__item.is-open .why__title::after { transform: scaleX(1); transition-delay: 0.1s; }
+.why__toggle {
+  flex: none;
+  width: calc(40 * var(--uw));
+  height: calc(40 * var(--uw));
+  transition: rotate 0.6s var(--ease), scale 0.4s var(--ease);
+}
+.why__head:hover .why__toggle { scale: 1.1; }
+.why__item.is-open .why__toggle { rotate: 180deg; }
+
+/* height 0 -> auto through grid rows, so the body opens smoothly */
+.why__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease), margin-top 0.6s var(--ease);
+}
+/* layout: body 14px under the title (the head keeps 30px below it) */
+.why__item.is-open .why__body { grid-template-rows: 1fr; margin-top: calc(-16 * var(--uw)); }
+.why__body > div { overflow: hidden; }
+.why__body p {
+  width: calc(680 * var(--uw));
+  padding-bottom: calc(30 * var(--uw));
+  font-size: calc(23 * var(--uw));
+  line-height: 1.58;
+  opacity: 0;
+  translate: 0 calc(-8 * var(--uw));
+  transition: opacity 0.3s var(--ease), translate 0.3s var(--ease);
+}
+.why__item.is-open .why__body p {
+  opacity: 0.66;
+  translate: 0 0;
+  transition: opacity 0.6s var(--ease) 0.15s, translate 0.6s var(--ease) 0.15s;
+}
+
+.why__cta {
+  margin-top: calc(44 * var(--uw));
+  padding: calc(26 * var(--uw)) calc(49 * var(--uw));
+  font-size: calc(23 * var(--uw));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why__mark { animation: none; }
+}

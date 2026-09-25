@@ -1,0 +1,230 @@
+/* Section 04, Figma 60:2. Normal-flow section: design px x --uw. */
+.services {
+  position: relative;
+  padding: calc(80 * var(--uw)) calc(120 * var(--uw)) calc(100 * var(--uw));
+  background: var(--white);
+  color: var(--navy-900);
+}
+.services__eyebrow {
+  font-size: calc(23 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.services__h2 {
+  margin-top: calc(10 * var(--uw));
+  font-size: calc(55 * var(--uw));
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+/* Cards: active 810, others 420, gap 15 - flex-grow carries the widths, so it animates */
+.services__row {
+  display: flex;
+  gap: calc(15 * var(--uw));
+  height: calc(640 * var(--uw));
+  margin-top: calc(101 * var(--uw));
+}
+.service {
+  --dur: 0.9s;
+  position: relative;
+  flex: 420 1 0;
+  min-width: 0;
+  border-radius: calc(28 * var(--uw));
+  overflow: hidden;
+  background: var(--grey);
+  transition: flex-grow var(--dur) var(--ease);
+  isolation: isolate;
+}
+.service.is-active { flex-grow: 810; }
+
+.service__num {
+  position: absolute;
+  top: calc(28 * var(--uw));
+  left: calc(28 * var(--uw));
+  font-size: calc(20 * var(--uw));
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--orange);
+}
+
+/* --- collapsed layer ----------------------------------------------------------------------- */
+.service__rest {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(420 * var(--uw));
+  padding: 0 calc(32 * var(--uw)) calc(40 * var(--uw));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: opacity 0.5s var(--ease) 0.25s;
+}
+.service.is-active .service__rest { opacity: 0; transition-delay: 0s; transition-duration: 0.3s; }
+
+.service__icon {
+  position: absolute;
+  top: calc(64 * var(--uw));
+  left: calc(120 * var(--uw));
+  width: calc(180 * var(--uw));
+  height: calc(180 * var(--uw));
+}
+.service__icon img { width: 100%; height: 100%; }
+/* Living colour inside the glass (mask = the object's shape): three blurred brand-colour blobs
+   drift on their own paths and periods (2.6-3.6 s: 5-7 s was lazy, 1.7-2.4 s flashed), so the tint keeps flowing without repeating.
+   Blend "color" re-tints the glass but keeps its highlights and shadows. */
+.service__icon { isolation: isolate; }
+.service__flow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  mix-blend-mode: color;
+  opacity: 0.8;
+  -webkit-mask: var(--mask) center / contain no-repeat;
+  mask: var(--mask) center / contain no-repeat;
+  transition: opacity 0.6s var(--ease);
+}
+.service:hover .service__flow { opacity: 1; }
+.service__flow i {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  filter: blur(calc(18 * var(--uw)));
+  animation: var(--path) var(--t) ease-in-out infinite alternate;
+}
+.service__flow i:nth-child(1) { background: var(--orange); left: -10%; top: 10%; --path: drift-a; --t: 2.6s; }
+.service__flow i:nth-child(2) { background: var(--blue-300); left: 40%; top: -10%; --path: drift-b; --t: 3.2s; }
+.service__flow i:nth-child(3) { background: var(--blue-500); left: 20%; top: 45%; --path: drift-c; --t: 3.6s; }
+@keyframes drift-a {
+  0% { translate: 0 0; } 35% { translate: 55% -20%; } 70% { translate: 20% 45%; } 100% { translate: 70% 30%; }
+}
+@keyframes drift-b {
+  0% { translate: 0 0; } 40% { translate: -55% 40%; } 75% { translate: -10% 70%; } 100% { translate: -60% 10%; }
+}
+@keyframes drift-c {
+  0% { translate: 0 0; } 30% { translate: 35% -55%; } 65% { translate: -35% -25%; } 100% { translate: 25% -10%; }
+}
+
+.service__sub {
+  font-size: calc(22 * var(--uw));
+  line-height: 1.5;
+  opacity: 0.55;
+}
+.service__title {
+  margin-top: calc(12 * var(--uw));
+  font-size: calc(29 * var(--uw));
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* --- expanded layer ------------------------------------------------------------------------ */
+.service__open {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(810 * var(--uw));
+  background: var(--navy-900);
+  color: var(--white);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease), visibility 0s linear 0.6s;
+}
+.service.is-active .service__open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.7s var(--ease) 0.15s, visibility 0s;
+}
+.service__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 1.4s var(--ease);
+}
+.service.is-active .service__photo { transform: scale(1); }
+.service__open::before { /* scrim, as in the layout */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgb(22 31 53 / 0.9) 0%, rgb(22 31 53 / 0.78) 30%, rgb(22 31 53 / 0.2) 50%, rgb(22 31 53 / 0.08) 72%, rgb(22 31 53 / 0.72) 100%);
+}
+.service__open > :not(.service__photo) { position: absolute; z-index: 2; }
+.service__open .service__num { top: calc(36 * var(--uw)); left: calc(36 * var(--uw)); font-size: calc(21 * var(--uw)); }
+.service__open-title {
+  top: calc(92 * var(--uw));
+  left: calc(44 * var(--uw));
+  width: calc(722 * var(--uw));
+  font-size: calc(39 * var(--uw));
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+}
+.service__open-title span { display: block; }
+.service__open-sub {
+  top: calc(192 * var(--uw));
+  left: calc(44 * var(--uw));
+  font-size: calc(27 * var(--uw));
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--orange);
+}
+.service__cta {
+  left: calc(44 * var(--uw));
+  bottom: calc(40 * var(--uw));
+  padding: calc(20 * var(--uw)) calc(34 * var(--uw));
+  font-size: calc(18 * var(--uw));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* text and button rise in after the card has mostly opened */
+.service__open-title,
+.service__open-sub,
+.service__cta,
+.service__open .service__num {
+  opacity: 0;
+  translate: 0 calc(16 * var(--uw));
+  transition: opacity 0.4s var(--ease), translate 0.4s var(--ease);
+}
+.service.is-active :is(.service__open-title, .service__open-sub, .service__cta, .service__open .service__num) {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 0.8s var(--ease) 0.35s, translate 0.8s var(--ease) 0.35s;
+}
+.service.is-active .service__open-sub { transition-delay: 0.45s; }
+.service.is-active .service__cta { transition-delay: 0.55s; }
+
+/* Active card border: a thin brand gradient that slowly flows around it */
+.service::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(120deg, rgb(231 82 15 / 0.9), rgb(133 177 223 / 0.9), rgb(62 105 177 / 0.6), rgb(231 82 15 / 0.9));
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  pointer-events: none;
+  animation: border-flow 6s linear infinite;
+  transition: opacity 0.8s var(--ease);
+}
+.service.is-active::after { opacity: 0.85; }
+@keyframes border-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service__flow i,
+  .service::after { animation: none; }
+}

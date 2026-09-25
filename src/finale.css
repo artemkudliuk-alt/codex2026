@@ -1,0 +1,324 @@
+/* Sections 09 + 10 (Figma 106:2, 109:2). Design px x --uw. */
+.finale {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy-900);
+  color: var(--white);
+}
+
+/* Sun: 1920x1080 video box from y 200 of the CTA, running into the footer */
+.finale__sun {
+  position: absolute;
+  overflow: hidden; /* hides the blurred video's soft edges */
+  left: 0;
+  top: calc(200 * var(--uw));
+  width: calc(1920 * var(--uw));
+  height: calc(1080 * var(--uw));
+}
+.finale__video { /* softened so the surface texture reads as glow, not a planet (client) */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(calc(7 * var(--uw))) saturate(1.1);
+  scale: 1.05;
+}
+.finale__warm { /* a touch of yellow in the magma (client) */
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(52% 58% at 49.5% 92%, rgb(255 196 60 / 0.6), rgb(255 170 40 / 0.25) 55%, transparent 75%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.finale__flames { /* flame tongues along the rim, under a blur */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(calc(10 * var(--uw)));
+  mix-blend-mode: screen;
+}
+.finale__sun::before,
+.finale__sun::after { content: ''; position: absolute; left: 0; right: 0; pointer-events: none; }
+.finale__sun::before { /* the video's navy sky melts into the page navy */
+  top: 0;
+  height: 40%;
+  background: linear-gradient(180deg, var(--navy-900) 0%, rgb(22 31 53 / 0) 100%);
+  z-index: 2;
+}
+.finale__sun::after { /* and its bottom edge into the footer */
+  bottom: -1px;
+  height: 45%;
+  background: linear-gradient(180deg, rgb(22 31 53 / 0) 0%, rgb(22 31 53 / 0.55) 55%, var(--navy-900) 100%);
+  z-index: 2;
+}
+
+/* soft light breathing at the top of the dome */
+.finale__pulse {
+  position: absolute;
+  left: 34%;
+  top: 44%;
+  width: 32%;
+  height: 34%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 214 170 / 0.55), rgb(231 82 15 / 0.18) 60%, transparent);
+  mix-blend-mode: screen;
+  animation: sun-pulse 13s ease-in-out infinite; /* half speed (client) */
+}
+@keyframes sun-pulse {
+  0%, 100% { opacity: 0.35; scale: 0.92; }
+  50% { opacity: 0.9; scale: 1.06; }
+}
+
+/* a light running along the rim, left to right, ~7s */
+.finale__rim { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; mix-blend-mode: screen; } /* only the visible upper arc */
+.finale__rim path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 0.14 0.86;
+  animation: rim-run 14s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.finale__rim-glow { stroke: rgb(133 177 223 / 0.7); stroke-width: 26; filter: blur(14px); }
+.finale__rim-core { stroke: rgb(255 255 255 / 0.75); stroke-width: 6; filter: blur(5px); }
+@keyframes rim-run {
+  from { stroke-dashoffset: 0.14; }
+  to { stroke-dashoffset: -1; }
+}
+
+.finale__sparks {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(1280 * var(--uw));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- CTA ----------------------------------------------------------------------------------- */
+.cta {
+  position: relative;
+  z-index: 3;
+  height: calc(1080 * var(--uw));
+  padding-top: calc(150 * var(--uw));
+  text-align: center;
+}
+.cta__h2 {
+  font-size: calc(81 * var(--uw));
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.cta__sub {
+  margin-top: calc(28 * var(--uw));
+  font-size: calc(33 * var(--uw));
+  line-height: 1.6;
+  opacity: 0.72;
+}
+.cta__note {
+  margin-top: calc(14 * var(--uw));
+  font-size: calc(22 * var(--uw));
+  line-height: 1.5;
+  opacity: 0.45;
+}
+.cta__row {
+  display: flex;
+  justify-content: center;
+  gap: calc(23 * var(--uw));
+  margin-top: calc(40 * var(--uw));
+}
+.cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(18 * var(--uw));
+  padding: calc(14 * var(--uw)) calc(14 * var(--uw)) calc(14 * var(--uw)) calc(43 * var(--uw));
+  border-radius: 999px;
+  font-size: calc(24 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  transition: transform 0.5s var(--ease), background-color 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+.cta__btn:active { transform: scale(0.97); }
+.cta__btn--primary { background: var(--white); color: var(--navy-900); }
+.cta__btn--ghost { background: rgb(255 255 255 / 0.06); border: 1px solid rgb(255 255 255 / 0.2); color: var(--white); }
+.cta__btn--ghost:hover { background: rgb(255 255 255 / 0.12); border-color: rgb(255 255 255 / 0.4); }
+.cta__circ {
+  display: grid;
+  place-items: center;
+  width: calc(57 * var(--uw));
+  height: calc(57 * var(--uw));
+  border-radius: 50%;
+  transition: scale 0.5s var(--ease);
+}
+.cta__btn:hover .cta__circ { scale: 1.08; }
+.cta__btn--primary .cta__circ { background: var(--orange); color: var(--white); }
+.cta__btn--ghost .cta__circ { border: 1.3px solid rgb(255 255 255 / 0.28); }
+.cta__circ .arrow { margin: 0; font-size: calc(24 * var(--uw)); }
+
+/* staggered rise when the block comes into view */
+.rise { opacity: 0; translate: 0 calc(30 * var(--uw)); transition: opacity 0.9s var(--ease), translate 1s var(--ease); }
+.finale.is-in .rise { opacity: 1; translate: 0 0; }
+.finale.is-in .rise:nth-child(2) { transition-delay: 0.1s; }
+.finale.is-in .rise:nth-child(3) { transition-delay: 0.18s; }
+.finale.is-in .rise:nth-child(4) { transition-delay: 0.26s; }
+
+/* --- footer -------------------------------------------------------------------------------- */
+.footer {
+  position: relative;
+  z-index: 3;
+  height: calc(1080 * var(--uw));
+}
+.footer__nav {
+  position: absolute;
+  left: 0;
+  top: calc(306 * var(--uw));
+  width: 100%;
+  height: calc(214 * var(--uw));
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+  border-bottom: 1px solid rgb(255 255 255 / 0.16);
+}
+.footer__home {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(40 * var(--uw));
+  font-size: calc(22 * var(--uw));
+  font-weight: 500;
+  color: var(--orange);
+  z-index: 1;
+}
+.footer__card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 calc(40 * var(--uw)) calc(22 * var(--uw));
+  font-size: calc(33 * var(--uw));
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  isolation: isolate;
+  transition: color 0.5s var(--ease);
+}
+.footer__card:first-of-type { padding-left: calc(120 * var(--uw)); }
+.footer__card + .footer__card { border-left: 1px solid rgb(255 255 255 / 0.16); }
+.footer__card::before { /* hover: orange fills the card from the bottom (Figma 109:38) */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--orange);
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.6s var(--ease);
+}
+.footer__card:hover::before,
+.footer__card:focus-visible::before { clip-path: inset(0 0 0 0); }
+.footer__card:hover { color: var(--navy-900); }
+.footer__nav-arrow {
+  width: calc(30 * var(--uw));
+  height: calc(30 * var(--uw));
+  margin-bottom: calc(6 * var(--uw));
+  transition: translate 0.5s var(--ease), filter 0.5s var(--ease);
+}
+.footer__card:hover .footer__nav-arrow { translate: calc(4 * var(--uw)) calc(-4 * var(--uw)); filter: brightness(0) saturate(100%) invert(10%) sepia(20%) saturate(1500%) hue-rotate(195deg); }
+
+.footer__contacts {
+  position: absolute;
+  left: calc(128 * var(--uw));
+  top: calc(599 * var(--uw));
+  display: flex;
+  gap: calc(60 * var(--uw));
+  font-size: calc(23 * var(--uw));
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.8);
+}
+.footer__contacts a { transition: color 0.3s var(--ease); }
+.footer__contacts a:hover { color: var(--orange); }
+
+.footer__socials {
+  position: absolute;
+  right: calc(106 * var(--uw));
+  top: calc(581 * var(--uw));
+  display: flex;
+  gap: calc(10 * var(--uw));
+}
+.footer__social {
+  display: grid;
+  place-items: center;
+  width: calc(72 * var(--uw));
+  height: calc(72 * var(--uw));
+  border: 1px solid var(--orange);
+  border-radius: 50%;
+  color: var(--orange);
+  transition: background-color 0.4s var(--ease), color 0.4s var(--ease), transform 0.5s var(--ease);
+}
+.footer__social i {
+  width: calc(30 * var(--uw));
+  height: calc(30 * var(--uw));
+  background: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+.footer__social:hover { background: var(--orange); color: var(--white); transform: translateY(calc(-3 * var(--uw))); }
+
+.footer__disclaimer {
+  position: absolute;
+  left: calc(128 * var(--uw));
+  top: calc(683 * var(--uw));
+  width: calc(833 * var(--uw));
+  font-size: calc(18 * var(--uw));
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.42);
+}
+.footer__copy,
+.footer__legal {
+  position: absolute;
+  top: calc(990 * var(--uw));
+  font-size: calc(21 * var(--uw));
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.6);
+}
+.footer__copy { left: calc(120 * var(--uw)); font-weight: 500; }
+.footer__legal { left: calc(560 * var(--uw)); z-index: 1; display: flex; align-items: baseline; gap: calc(48 * var(--uw)); font-size: calc(22 * var(--uw)); } /* clear of the turning mark */
+.footer__legal a { transition: color 0.3s var(--ease); }
+.footer__legal a:hover { color: var(--white); }
+.footer__credit { font-size: calc(16 * var(--uw)); color: rgb(255 255 255 / 0.4); }
+
+/* back to top: vertical, bottom-left of the footer (x1.5 of the first version, client) */
+.footer__top {
+  position: absolute;
+  left: calc(34 * var(--uw));
+  bottom: calc(48 * var(--uw));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(20 * var(--uw));
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--orange);
+  cursor: pointer;
+  font: inherit;
+  font-size: calc(22.5 * var(--uw));
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.footer__top span { writing-mode: vertical-rl; rotate: 180deg; } /* reads bottom to top */
+.footer__top svg { width: calc(33 * var(--uw)); height: calc(33 * var(--uw)); transition: translate 0.5s var(--ease); }
+.footer__top:hover svg { translate: 0 calc(-7 * var(--uw)); }
+
+/* the mark in the corner turns slowly: one revolution in 20s */
+.footer__mark {
+  position: absolute;
+  left: calc(1560 * var(--uw)); /* centre near the corner, as the layout crop */
+  top: calc(740 * var(--uw));
+  width: calc(600 * var(--uw));
+  height: calc(600 * var(--uw));
+  animation: mark-turn 20s linear infinite;
+}
+@keyframes mark-turn { to { rotate: 360deg; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .finale__pulse, .finale__rim path, .footer__mark { animation: none; }
+}

@@ -1,0 +1,160 @@
+/* Section 03, Figma 38:2. Video-locked sizes: design px x --c (cover); heading: x --uw. */
+.flow {
+  position: relative;
+  height: calc(100vh + var(--stick));
+  background: var(--navy-900);
+}
+.flow__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 1920x1080 layer covering the screen: the video and everything pinned to the stream */
+.flow__cover {
+  position: absolute;
+  left: calc(50% - 960 * var(--c));
+  top: calc(50% - 540 * var(--c));
+  width: calc(1920 * var(--c));
+  height: calc(1080 * var(--c));
+  margin: 0;
+  padding: 0;
+}
+.flow__video,
+.flow__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.flow__canvas { visibility: hidden; }
+.flow.is-gl .flow__canvas { visibility: visible; } /* only while the pointer effect runs */
+
+.flow__scrim { position: absolute; inset: 0; pointer-events: none; }
+.flow__scrim--top {
+  bottom: auto;
+  height: calc(520 * var(--c));
+  background: linear-gradient(180deg, rgb(22 31 53 / 0.8) 0%, rgb(22 31 53 / 0.42) 60%, rgb(22 31 53 / 0) 100%);
+}
+.flow__scrim--left {
+  background: linear-gradient(90deg, rgb(22 31 53 / 0.8) 0%, rgb(22 31 53 / 0.4) 34%, rgb(22 31 53 / 0.06) 62%, rgb(22 31 53 / 0) 100%);
+}
+
+/* Seamless junction with section 02: both edges meet in the same navy */
+.flow__fade-top {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(240 * var(--c));
+  background: linear-gradient(180deg, var(--navy-900) 0%, rgb(22 31 53 / 0) 100%);
+  pointer-events: none;
+}
+
+/* Steps span the screen. --x0: left edge of the video layer. x and node y are video-locked
+   (x --c); the text stair runs from the top of the screen (x --uw). */
+.flow__steps {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+  --x0: calc(50% - 960 * var(--c));
+}
+.flow__step {
+  position: absolute;
+  inset: 0;
+  --ty: calc((51 + 32 * var(--i)) * var(--uw)); /* layout stair 72, flattened (client) */
+  --node-top: calc(50% - 540 * var(--c) + (var(--node-y) - 35) * var(--c)); /* node 70 (layout 54, +30%) */
+  --line-top: calc(var(--ty) + 156 * var(--c)); /* text block 141 + gap 15 */
+}
+
+.flow__num,
+.flow__title {
+  position: absolute;
+  left: calc(var(--x0) + (var(--cx) - 150) * var(--c));
+}
+.flow__num {
+  top: var(--ty);
+  font-size: calc(27 * var(--c));
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: 0.04em;
+  color: var(--orange);
+}
+.flow__title {
+  top: calc(var(--ty) + 49 * var(--c));
+  width: calc(320 * var(--c));
+  font-size: calc(39 * var(--c));
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.flow__line {
+  position: absolute;
+  left: calc(var(--x0) + var(--cx) * var(--c));
+  top: var(--line-top);
+  width: 1px;
+  height: calc(var(--node-top) - var(--line-top));
+  background: rgb(255 255 255 / 0.42);
+  transform-origin: bottom; /* grows up from the node */
+}
+.flow__node {
+  position: absolute;
+  left: calc(var(--x0) + (var(--cx) - 35) * var(--c));
+  top: var(--node-top);
+  width: calc(70 * var(--c));
+  height: calc(70 * var(--c));
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--navy-900);
+  border: 1px solid rgb(255 255 255 / 0.55);
+  transition: border-color 0.5s var(--ease), box-shadow 0.7s var(--ease);
+}
+.flow__node svg { width: calc(34 * var(--c)); height: calc(34 * var(--c)); color: var(--white); }
+.flow__node path { stroke-dasharray: 1; } /* pathLength=1: drawn by animating the dash offset */
+.flow__step.is-lit .flow__node {
+  border-color: var(--orange);
+  box-shadow: 0 0 calc(28 * var(--c)) rgb(231 82 15 / 0.65), inset 0 0 calc(10 * var(--c)) rgb(231 82 15 / 0.35);
+}
+.flow__arrow { /* x: centred between the titles in JS (text widths vary); y: halfway between their middles */
+  position: absolute;
+  left: calc(var(--x0) + (var(--cx) + 150) * var(--c));
+  top: calc(var(--ty) + (49 + 46 - 6) * var(--c) + 20 * var(--uw));
+  width: calc(22 * var(--c));
+  height: calc(12 * var(--c));
+}
+
+/* Heading: bottom-left of the screen */
+.flow__heading {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  bottom: calc(64 * var(--uw));
+}
+.flow__eyebrow {
+  font-size: calc(31 * var(--uw));
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.flow__h2 {
+  margin-top: calc(10 * var(--uw));
+  font-size: calc(60 * var(--uw));
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+.flow__note {
+  width: calc(820 * var(--uw));
+  margin-top: calc(18 * var(--uw));
+  font-size: calc(27 * var(--uw));
+  line-height: calc(38 * var(--uw));
+  color: var(--blue-300);
+}
+
+.flow__veil {
+  position: absolute;
+  inset: 0;
+  background: var(--navy-900);
+  pointer-events: none;
+}

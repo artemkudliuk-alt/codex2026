@@ -1,0 +1,322 @@
+/* Section 06, Figma 73:2 (1920 x 1220). Normal-flow section: design px x --uw. */
+.calc {
+  position: relative;
+  height: calc(1220 * var(--uw));
+  overflow: hidden;
+  background: var(--white);
+  color: var(--navy-900);
+}
+.calc__ribbons {
+  position: absolute;
+  left: calc(-50 * var(--uw));
+  top: calc(390 * var(--uw));
+  width: calc(2020 * var(--uw));
+  height: calc(1080 * var(--uw));
+}
+.calc__panel {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(110 * var(--uw));
+  width: calc(1680 * var(--uw));
+  height: calc(640 * var(--uw));
+}
+.calc__eyebrow {
+  font-size: calc(14 * var(--uw));
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+/* --- inputs -------------------------------------------------------------------------------- */
+.calc__inputs { position: absolute; left: 0; top: 0; width: calc(460 * var(--uw)); }
+.calc__h2 {
+  margin-top: calc(12 * var(--uw));
+  font-size: calc(48 * var(--uw));
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap; /* layout: two lines, wider than the slider column */
+}
+.calc__slider {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  row-gap: calc(8 * var(--uw));
+  cursor: pointer;
+}
+.calc__slider:nth-of-type(1) { top: calc(250 * var(--uw)); }
+.calc__slider:nth-of-type(2) { top: calc(460 * var(--uw)); }
+.calc__slider-label { font-size: calc(19 * var(--uw)); font-weight: 500; color: rgb(22 31 53 / 0.75); }
+.calc__slider-value { font-size: calc(30 * var(--uw)); font-weight: 700; font-variant-numeric: tabular-nums; }
+.calc__slider-min,
+.calc__slider-max { font-size: calc(15 * var(--uw)); font-weight: 500; }
+.calc__slider-max { text-align: right; }
+
+/* native range, styled as the layout: 4px track with an orange fill, round handle */
+.calc__slider input {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: calc(22 * var(--uw));
+  margin: calc(8 * var(--uw)) 0 0;
+  background: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.calc__slider input::-webkit-slider-runnable-track {
+  height: calc(4 * var(--uw));
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--orange) var(--p), rgb(22 31 53 / 0.1) var(--p));
+}
+.calc__slider input::-moz-range-track {
+  height: calc(4 * var(--uw));
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--orange) var(--p), rgb(22 31 53 / 0.1) var(--p));
+}
+.calc__slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: calc(22 * var(--uw));
+  height: calc(22 * var(--uw));
+  margin-top: calc(-9 * var(--uw));
+  border-radius: 50%;
+  background: var(--white);
+  border: calc(4 * var(--uw)) solid var(--orange);
+  transition: scale 0.3s var(--ease);
+}
+.calc__slider input::-moz-range-thumb {
+  width: calc(14 * var(--uw));
+  height: calc(14 * var(--uw));
+  border-radius: 50%;
+  background: var(--white);
+  border: calc(4 * var(--uw)) solid var(--orange);
+}
+.calc__slider input:hover::-webkit-slider-thumb,
+.calc__slider input:focus-visible::-webkit-slider-thumb { scale: 1.2; }
+.calc__slider input:focus-visible { outline: none; }
+
+/* --- tiles --------------------------------------------------------------------------------- */
+.calc__tiles {
+  position: absolute;
+  left: calc(532 * var(--uw));
+  top: 0;
+  display: grid;
+  grid-template-columns: repeat(2, calc(248 * var(--uw)));
+  grid-template-rows: repeat(2, calc(292 * var(--uw))) auto;
+  gap: calc(16 * var(--uw));
+}
+/* the calculation behind the tiles, recalculated with the sliders */
+.calc__formula {
+  grid-column: 1 / -1;
+  margin-top: calc(4 * var(--uw));
+  font-size: calc(15 * var(--uw));
+  line-height: 1.5;
+  color: rgb(22 31 53 / 0.75);
+  font-variant-numeric: tabular-nums;
+}
+.calc__formula b { color: var(--blue-500); }
+.calc__formula b.is-opt { color: var(--orange); }
+.calc__formula span { display: block; white-space: nowrap; }
+.calc__tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: calc(24 * var(--uw));
+  border-radius: calc(22 * var(--uw));
+  background: var(--grey);
+}
+.calc__tile-label {
+  font-size: calc(14 * var(--uw));
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.calc__tile-value { /* centred between the label and the note (client) */
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding-bottom: calc(40 * var(--uw)); /* optical centre above the note */
+  font-size: calc(42 * var(--uw) * var(--fit, 1));
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.calc__tile-note {
+  position: absolute;
+  left: calc(24 * var(--uw));
+  bottom: calc(24 * var(--uw));
+  width: calc(200 * var(--uw));
+  font-size: calc(14 * var(--uw));
+  line-height: 1.35;
+}
+.calc__tile--opt { background: rgb(231 82 15 / 0.08); }
+.calc__tile--opt :is(.calc__tile-label, .calc__tile-value) { color: var(--orange); }
+
+/* --- chart --------------------------------------------------------------------------------- */
+.calc__chart {
+  position: absolute;
+  left: calc(1116 * var(--uw));
+  top: 0;
+  width: calc(564 * var(--uw));
+}
+.calc__chart-title {
+  margin-top: calc(8 * var(--uw));
+  font-size: calc(30 * var(--uw));
+  font-weight: 700;
+}
+.calc__legend {
+  position: absolute;
+  top: calc(4 * var(--uw));
+  left: calc(368 * var(--uw));
+  display: grid;
+  gap: calc(8 * var(--uw));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: calc(15 * var(--uw));
+  font-weight: 500;
+  color: rgb(22 31 53 / 0.8);
+}
+.calc__legend li { display: flex; align-items: center; gap: calc(8 * var(--uw)); }
+.calc__legend li::before {
+  content: '';
+  width: calc(10 * var(--uw));
+  height: calc(10 * var(--uw));
+  border-radius: 50%;
+  background: currentColor;
+}
+.calc__legend .is-base::before { background: var(--blue-500); }
+.calc__legend .is-opt::before { background: var(--orange); }
+
+.calc__plot {
+  position: absolute;
+  left: calc(58 * var(--uw));
+  top: calc(250 * var(--uw));
+  width: calc(506 * var(--uw));
+  height: calc(290 * var(--uw));
+}
+.calc__plot svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  /* first appearance: revealed left to right (a dash would cut the line once it morphs) */
+  clip-path: inset(-10% 100% -10% 0);
+  transition: clip-path 1.6s var(--ease);
+}
+.calc.is-in .calc__plot svg { clip-path: inset(-10% -2% -10% 0); }
+.calc__grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--y);
+  height: 1px;
+  background: rgb(22 31 53 / 0.07);
+}
+.calc__grid.is-zero { background: rgb(22 31 53 / 0.18); }
+.calc__grid span { /* y labels sit in the chart's left gutter */
+  position: absolute;
+  left: calc(-58 * var(--uw));
+  translate: 0 -50%;
+  font-size: calc(13 * var(--uw));
+  font-weight: 500;
+  white-space: nowrap;
+}
+.calc__xtick { /* one tick per year: label under the axis, faint line up the plot */
+  position: absolute;
+  top: calc(100% + 10 * var(--uw));
+  left: var(--x);
+  translate: -50% 0;
+  font-size: calc(13 * var(--uw));
+  font-weight: 500;
+  color: rgb(22 31 53 / 0.6);
+  transition: color 0.3s var(--ease);
+}
+.calc__xtick::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10 * var(--uw));
+  height: calc(290 * var(--uw));
+  border-left: 1px dashed rgb(22 31 53 / 0.08);
+}
+.calc__xtick.is-on { color: var(--navy-900); font-weight: 700; }
+.calc__xunit {
+  position: absolute;
+  top: calc(100% + 30 * var(--uw));
+  right: 0;
+  font-size: calc(12 * var(--uw));
+  color: rgb(22 31 53 / 0.5);
+}
+
+/* selected year: two big scenario figures above the plot */
+.calc__big {
+  position: absolute;
+  top: calc(92 * var(--uw));
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: calc(44 * var(--uw));
+  font-variant-numeric: tabular-nums;
+}
+.calc__big p { display: grid; gap: calc(6 * var(--uw)); font-size: calc(46 * var(--uw)); font-weight: 700; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+.calc__big span { font-size: calc(14 * var(--uw)); font-weight: 600; letter-spacing: 0.06em; color: rgb(22 31 53 / 0.55); }
+.calc__big .is-base { color: var(--blue-500); }
+.calc__big .is-opt { color: var(--orange); }
+
+.calc__line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.calc__line--base { stroke: var(--blue-500); }
+.calc__line--opt { stroke: var(--orange); }
+
+.calc__cursor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--x);
+  width: 1px;
+  background: rgb(22 31 53 / 0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease) 1.2s; /* position comes from the same frame as the curves */
+}
+.calc.is-in .calc__cursor { opacity: 1; }
+.calc__cursor i {
+  position: absolute;
+  left: calc(-7 * var(--uw));
+  top: calc(var(--y) - 7 * var(--uw));
+  width: calc(14 * var(--uw));
+  height: calc(14 * var(--uw));
+  border-radius: 50%;
+  background: var(--white);
+  border: calc(2.5 * var(--uw)) solid;
+}
+.calc__cursor i.is-base { border-color: var(--blue-500); }
+.calc__cursor i.is-opt { border-color: var(--orange); }
+
+.calc__footnote {
+  position: absolute;
+  top: calc(596 * var(--uw));
+  font-size: calc(15 * var(--uw));
+}
+
+.calc__cta {
+  position: absolute;
+  top: calc(702 * var(--uw));
+  left: 50%;
+  translate: -50% 0;
+  padding: calc(20 * var(--uw)) calc(36 * var(--uw));
+  font-size: calc(22 * var(--uw));
+}
+.calc__cta:active { transform: scale(0.97); }

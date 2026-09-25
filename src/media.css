@@ -1,0 +1,89 @@
+/* Section 08, Figma 102:2. Normal-flow section: design px x --uw. */
+.media {
+  position: relative;
+  height: calc(1080 * var(--uw));
+  background: var(--white);
+  color: var(--navy-900);
+}
+.media__eyebrow {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(90 * var(--uw));
+  font-size: calc(23 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.media__h2 {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(133 * var(--uw));
+  font-size: calc(60 * var(--uw));
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+.media__all {
+  position: absolute;
+  right: calc(120 * var(--uw));
+  top: calc(141 * var(--uw));
+  display: inline-flex;
+  align-items: center;
+  font-size: calc(26 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--orange);
+}
+.media__all:hover { filter: brightness(1.1); }
+
+.media__grid {
+  position: absolute;
+  left: calc(120 * var(--uw));
+  top: calc(330 * var(--uw));
+  width: calc(1680 * var(--uw));
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(64 * var(--uw));
+}
+.post {
+  display: block;
+  opacity: 0;
+  translate: 0 calc(36 * var(--uw));
+  transition: opacity 0.8s var(--ease), translate 1s var(--ease);
+  transition-delay: calc(var(--i) * 0.12s);
+}
+.media.is-in .post { opacity: 1; translate: 0 0; }
+.post__photo {
+  display: block;
+  height: calc(430 * var(--uw));
+  border-radius: calc(14 * var(--uw));
+  overflow: hidden;
+}
+.post__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 1.2s var(--ease);
+}
+.post:hover .post__photo img { scale: 1.05; }
+.post__source {
+  display: block;
+  margin-top: calc(26 * var(--uw));
+  font-size: calc(20 * var(--uw));
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--orange);
+}
+.post__title {
+  display: block;
+  margin-top: calc(2 * var(--uw));
+  font-size: calc(30 * var(--uw));
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  transition: color 0.4s var(--ease);
+}
+.post:hover .post__title { color: var(--blue-500); }
