@@ -222,7 +222,7 @@ export default function Hero() {
                 '--mx': M_CARDS[i].cx - M_CARDS[i].w / 2, '--my': M_CARDS[i].cy - M_CARDS[i].h / 2, '--mw': M_CARDS[i].w, '--mh': M_CARDS[i].h,
               }}
             >
-              <img className="hero__card-img" src={`/hero/c${i}.webp`} alt="" />
+              <img className="hero__card-img" src={`/hero/c${i}.webp?v=2`} alt="" />{/* ?v: static files are cached for 7 days (vercel.json); bump on replacing a photo */}
             </div>
           ))}
         </div>
