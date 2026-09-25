@@ -83,11 +83,12 @@
   }
   .menu__logo {
     position: absolute;
-    left: calc(50% - 64 * var(--m));
-    top: calc(15 * var(--m));
-    width: calc(128 * var(--m));
+    left: calc(20 * var(--m)); /* exactly where the header logo sits (client) */
+    top: calc(32 * var(--m) - 17.1 * var(--m)); /* header centre line (64 / 2) minus half the logo */
+    width: calc(95 * var(--m));
     opacity: 0;
     scale: 0.7;
+    transform-origin: left center;
     transition: opacity 0.4s var(--ease), scale 0.4s var(--ease);
   }
   .menu__logo img { display: block; width: 100%; height: auto; }
