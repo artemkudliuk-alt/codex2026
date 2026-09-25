@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { units } from './scroll.js'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Arrow from './Arrow.jsx'
 import './projects.css'
@@ -77,21 +78,22 @@ export default function Projects() {
   const current = projects[active]
 
   return (
-    <section className={`proj${active >= 0 ? ' is-open' : ''}`} ref={root} onMouseMove={(e) => drift.current?.(e)}>
+    <section className={`proj${active >= 0 ? ' is-open' : ''}`} data-active={active} ref={root} onMouseMove={units.mobile ? undefined : (e) => drift.current?.(e)}>
       <p className="proj__eyebrow">{t('Два проєкти', 'Two projects')}</p>
       <h2 className="proj__h2">{t('Два енергопарки в реалізації', 'Two energy parks under way')}</h2>
 
-      <div className="proj__stage" onMouseLeave={() => setActive(-1)}>
+      <div className="proj__stage" onMouseLeave={units.mobile ? undefined : () => setActive(-1)}>
         <div className="proj__rule" />
         {projects.map((p, i) => (
           <button
             key={p.key}
             className={`proj__name proj__name--${p.key}${i === active ? ' is-active' : ''}${active >= 0 && i !== active ? ' is-dim' : ''}`}
             style={{ '--row': i }}
-            onMouseEnter={() => setActive(i)}
-            onFocus={() => setActive(i)}
-            aria-pressed={i === active}
+            {...(units.mobile // phones: a tap opens the park under its name, a second tap closes it
+              ? { onClick: () => setActive((a) => (a === i ? -1 : i)), 'aria-expanded': i === active }
+              : { onMouseEnter: () => setActive(i), onFocus: () => setActive(i), 'aria-pressed': i === active })}
           >
+            <img className="proj__toggle" src="/why/toggle.svg" alt="" />
             <span className="proj__label">{t('Енергопарк', 'Energy park')}</span>
             {lang === 'en' ? (
               <span className="proj__word proj__word--text" style={{ '--w': EN_W[p.key] }}>
@@ -102,7 +104,7 @@ export default function Projects() {
                     <rect x="-10" y="-10" width={EN_W[p.key] + 20} height="149" fill="#fff" />
                     <text x="0" y="97" fill="#000">{p.name.toUpperCase()}</text>
                   </mask>
-                  <text x="0" y="97" mask={`url(#proj-out-${p.key})`}>{p.name.toUpperCase()}</text>
+                  <text x="0" y="97" mask={units.mobile ? undefined : `url(#proj-out-${p.key})`}>{p.name.toUpperCase()}</text>
                 </svg>
                 <svg className="proj__fill" viewBox={`0 0 ${EN_W[p.key]} 129`} aria-hidden="true"><text x="0" y="97">{p.name.toUpperCase()}</text></svg>
               </span>
@@ -110,6 +112,10 @@ export default function Projects() {
               <span className="proj__word" style={{ '--w': NAMES[p.key].viewBox.split(' ')[2] }}>
                 <span className="sr-only">{p.name}</span>
                 {/* outline exactly as Figma renders it: its outside-stroke geometry, masked by the letters */}
+                {units.mobile ? (
+                  // phones: a plain vector stroke - the masked outside stroke rasterises visibly this small
+                  <svg className="proj__stroke" viewBox={NAMES[p.key].viewBox} aria-hidden="true"><path className="proj__outline" d={NAMES[p.key].d} /></svg>
+                ) : (
                 <svg className="proj__stroke" viewBox={NAMES[p.key].viewBox} aria-hidden="true">
                   <mask id={`proj-out-${p.key}`} maskUnits="userSpaceOnUse" x={NAMES[p.key].mask[0]} y={NAMES[p.key].mask[1]} width={NAMES[p.key].mask[2]} height={NAMES[p.key].mask[3]}>
                     <rect x={NAMES[p.key].mask[0]} y={NAMES[p.key].mask[1]} width={NAMES[p.key].mask[2]} height={NAMES[p.key].mask[3]} fill="#fff" />
@@ -117,6 +123,7 @@ export default function Projects() {
                   </mask>
                   <path d={NAMES[p.key].ring} mask={`url(#proj-out-${p.key})`} />
                 </svg>
+                )}
                 <svg className="proj__fill" viewBox={NAMES[p.key].viewBox} aria-hidden="true"><path d={NAMES[p.key].d} /></svg>
               </span>
             )}

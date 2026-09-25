@@ -22,18 +22,28 @@ const VIDEO_SPEED = 0.13
 // Video card in phase 02 (Figma 4:34) and phase 03 (4:51), design px.
 const SHRINK = { x: 380, y: 250, w: 1160, h: 738, r: 36 }
 const COLLAGE = { x: 703, y: 298, w: 568, h: 364, r: 22 }
-const COLLAGE_CX = COLLAGE.x + COLLAGE.w / 2
-const COLLAGE_CY = COLLAGE.y + COLLAGE.h / 2
+
+// Phones: the same three phases on a 390 x 844 stage (units.mu), portrait card and collage.
+const M_CARDS = [ // portrait cards tucked around a portrait video card, as the desktop collage
+  { cx: 195, cy: 196, w: 124, h: 170, rot: 3 },
+  { cx: 86, cy: 292, w: 128, h: 178, rot: 7 },
+  { cx: 304, cy: 282, w: 128, h: 178, rot: -5 },
+  { cx: 92, cy: 478, w: 124, h: 170, rot: -6 },
+  { cx: 298, cy: 484, w: 128, h: 174, rot: 5 },
+]
+const M_SHRINK = { x: 20, y: 130, w: 350, h: 560, r: 24 }
+const M_COLLAGE = { x: 107, y: 236, w: 176, h: 264, r: 18 }
 
 const PIN_LENGTH = 900 // scroll px the hero stays pinned: collage settles in ~7-8 wheel notches (client)
 const PARALLAX_FROM = 0.9 // timeline progress where the collage has settled
 
-// Design rect -> px inside the pinned viewport (1920x1080 stage, fitted and centred).
+// Design rect -> px inside the pinned viewport (1920x1080 stage, or 390x844 on phones, fitted and centred).
+const stage = () => (units.mobile ? { w: 390, h: 844, u: units.mu } : { w: 1920, h: 1080, u: units.u })
 const rectVars = ({ x, y, w, h }) => ({
-  left: () => (units.w - 1920 * units.u) / 2 + x * units.u,
-  top: () => (units.h - 1080 * units.u) / 2 + y * units.u,
-  width: () => w * units.u,
-  height: () => h * units.u,
+  left: () => (units.w - stage().w * stage().u) / 2 + x * stage().u,
+  top: () => (units.h - stage().h * stage().u) / 2 + y * stage().u,
+  width: () => w * stage().u,
+  height: () => h * stage().u,
 })
 
 export default function Hero() {
@@ -45,6 +55,13 @@ export default function Hero() {
     const el = root.current
     const q = gsap.utils.selector(el)
     const video = q('.hero__video')[0]
+    const mobile = units.mobile
+    const cards = mobile ? M_CARDS : CARDS
+    const SHR = mobile ? M_SHRINK : SHRINK
+    const COL = mobile ? M_COLLAGE : COLLAGE
+    const colCx = COL.x + COL.w / 2
+    const colCy = COL.y + COL.h / 2
+    const su = () => stage().u
     const header = document.querySelector('.header') // fixed, outside the hero
 
     // Mouse parallax on the settled collage (virya: tilt + drift, lerp 0.1).
@@ -80,7 +97,7 @@ export default function Hero() {
         gsap.to(tilt, { x: 0, y: 0, rotationX: 0, rotationY: 0, rotationZ: 0, duration: 0.3, ease: 'power2.out' })
       }
     }
-    const canTilt = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const canTilt = !mobile && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (canTilt) {
       el.addEventListener('mousemove', onMove)
       el.addEventListener('mouseleave', onLeave)
@@ -90,8 +107,8 @@ export default function Hero() {
     const copy = q('.hero__copy, .hero__badge')
     // Collage cards wait stacked behind the video (virya: z-index -1, centred).
     const stacked = {
-      x: (i) => (COLLAGE_CX - CARDS[i].cx) * units.u,
-      y: (i) => (COLLAGE_CY - CARDS[i].cy) * units.u,
+      x: (i) => (colCx - cards[i].cx) * su(),
+      y: (i) => (colCy - cards[i].cy) * su(),
       rotation: 0,
     }
 
@@ -109,8 +126,8 @@ export default function Hero() {
       },
     })
       // 01 -> 02: corners round almost at once, the size follows the scroll
-      .to(video, { borderRadius: () => SHRINK.r * units.u, duration: 0.08, ease: 'power1.out' }, 0)
-      .to(video, { ...rectVars(SHRINK), duration: 1, ease: 'power1.out' }, 0)
+      .to(video, { borderRadius: () => SHR.r * su(), duration: 0.08, ease: 'power1.out' }, 0)
+      .to(video, { ...rectVars(SHR), duration: 1, ease: 'power1.out' }, 0)
       .to(copy, { autoAlpha: 0, duration: 0.35 }, 0)
       .to(q('.hero__scrim'), { opacity: 0, duration: 0.6 }, 0)
       // Header (as before, client): slides up and fades with the very first scroll, no plate.
@@ -119,22 +136,22 @@ export default function Hero() {
       .to(header, { '--fade': 1, duration: 0.045 }, 0)
       // 02 -> 03
       .to(video, {
-        ...rectVars(COLLAGE),
-        borderRadius: () => COLLAGE.r * units.u,
-        boxShadow: () => `0px ${22 * units.u}px ${48 * units.u}px rgba(5, 13, 31, 0.3)`,
+        ...rectVars(COL),
+        borderRadius: () => COL.r * su(),
+        boxShadow: () => `0px ${22 * su()}px ${48 * su()}px rgba(5, 13, 31, 0.3)`,
         duration: 1,
         ease: 'power1.inOut',
       }, 1.15)
       .fromTo(q('.hero__card'), stacked, {
         x: 0,
         y: 0,
-        rotation: (i) => CARDS[i].rot,
+        rotation: (i) => cards[i].rot,
         duration: 0.7,
         stagger: 0.05,
         ease: 'power1.out',
       }, 1.35)
       .fromTo(q('.hero__statement'),
-        { y: () => 80 * units.u, autoAlpha: 0 },
+        { y: () => 80 * su(), autoAlpha: 0 },
         { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, 1.55)
       .to({}, { duration: 0.2 }) // short hold on the final composition before unpinning
 
@@ -150,8 +167,8 @@ export default function Hero() {
       const chars = new SplitText(q('.hero__copy h1'), { type: 'words,chars' }).chars
       const rest = q('.hero__copy p, .hero__ctas, .hero__badge-label')
       const value = q('.hero__badge-value')[0]
-      gsap.set(chars, { autoAlpha: 0, y: () => 30 * units.u, filter: 'blur(8px)' })
-      gsap.set([rest, value], { autoAlpha: 0, y: () => 24 * units.u })
+      gsap.set(chars, { autoAlpha: 0, y: () => 30 * su(), filter: 'blur(8px)' })
+      gsap.set([rest, value], { autoAlpha: 0, y: () => 24 * su() })
       gsap.set(header, { autoAlpha: 0, y: -20 })
       gsap.set(q('.hero__card'), stacked)
 
@@ -200,7 +217,10 @@ export default function Hero() {
             <div
               key={i}
               className="hero__card"
-              style={{ '--x': c.cx - c.w / 2, '--y': c.cy - c.h / 2, '--w': c.w, '--h': c.h }}
+              style={{
+                '--x': c.cx - c.w / 2, '--y': c.cy - c.h / 2, '--w': c.w, '--h': c.h,
+                '--mx': M_CARDS[i].cx - M_CARDS[i].w / 2, '--my': M_CARDS[i].cy - M_CARDS[i].h / 2, '--mw': M_CARDS[i].w, '--mh': M_CARDS[i].h,
+              }}
             >
               <img className="hero__card-img" src={`/hero/c${i}.webp`} alt="" />
             </div>

@@ -42,6 +42,7 @@ export default function Services() {
               tabIndex={0}
               onMouseEnter={() => setActive(i)}
               onFocus={() => setActive(i)}
+              onClick={() => setActive(i)} // phones: iOS does not focus a tapped card
             >
               {/* collapsed: glass icon on grey */}
               <div className="service__rest" aria-hidden={i === active}>

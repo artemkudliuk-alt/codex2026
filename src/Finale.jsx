@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Arrow from './Arrow.jsx'
-import { lenis, units } from './scroll.js'
+import { lenis } from './scroll.js'
 import { createFlames, createSparks } from './sparks.js'
 import { later, loadVideo } from './load.js'
 import { t } from './i18n.js'
@@ -12,7 +12,6 @@ import './finale.css'
 // video runs across the seam, with a light travelling along its rim, a soft pulse in the centre
 // and energy sparks rising into the empty sky. Sun rim in video px (1920x1080): measured.
 const RIM = { cx: 951, cy: 1563, r: 980 }
-const SUN_TOP = 200 // design px from the CTA top
 
 const NAV = () => [t('Послуги', 'Services'), t('Проекти', 'Projects'), t('Про нас', 'About us'), t('Блог', 'Blog'), t('Контакти', 'Contacts')]
 const SOCIALS = ['instagram', 'facebook', 'telegram', 'youtube', 'linkedin']
@@ -26,14 +25,17 @@ export default function Finale() {
     const canvas = el.querySelector('.finale__sparks')
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     later(() => loadVideo(video))
-    // the canvas covers the CTA; the sun box starts SUN_TOP down and is 1920 wide in design px
+    // the canvas covers the CTA; rim points come from the sun box as laid out
+    // (desktop: 1920 design px wide, 200 down; phones: their own box): video px -> css px
+    const sun = el.querySelector('.finale__sun')
+    const k = () => sun.offsetWidth / 1920
     const sparks = calm ? null : createSparks(canvas, () => ({
-      cx: RIM.cx * units.uw,
-      cy: (SUN_TOP + RIM.cy) * units.uw,
-      r: RIM.r * units.uw,
+      cx: sun.offsetLeft + RIM.cx * k(),
+      cy: sun.offsetTop + RIM.cy * k(),
+      r: RIM.r * k(),
     }))
     const flames = calm ? null : createFlames(el.querySelector('.finale__flames'), () => ({
-      cx: RIM.cx * units.uw, cy: RIM.cy * units.uw, r: RIM.r * units.uw,
+      cx: RIM.cx * k(), cy: RIM.cy * k(), r: RIM.r * k(),
     }))
     const tick = () => { sparks?.frame(); flames?.frame() }
     const onResize = () => { sparks?.resize(); flames?.resize() }

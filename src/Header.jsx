@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { lenis } from './scroll.js'
 import { lang, setLang, t } from './i18n.js'
@@ -98,8 +98,55 @@ function LangToggle() {
 // 2. from the scrub video (section 02, the moment it fills the screen) to the end of the site:
 //    drops in softly on a transparent glass plate and stays (client).
 // Over the white sections the glass gets dense, so the white menu stays readable.
+const SOCIALS = ['instagram', 'facebook', 'telegram', 'youtube', 'linkedin']
+
+// Phones: the 9 dots open a full-screen menu; the plate slides apart from the button and the
+// mark lands in the centre, then the items rise one by one. Scroll is held while it is open.
+function Menu({ open, onClose }) {
+  useEffect(() => {
+    if (!open) return undefined
+    lenis.stop()
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => { lenis.start(); window.removeEventListener('keydown', onKey) }
+  }, [open, onClose])
+
+  return (
+    <div className={`menu${open ? ' is-open' : ''}`} aria-hidden={!open} inert={!open}>
+      <span className="menu__logo" aria-hidden="true">
+        <img src="/hero/logo-word.svg" alt="" />
+        <img className="header__mark" src="/hero/logo-mark.svg" alt="" />
+      </span>
+      <button className="menu__close" onClick={onClose} aria-label={t('Закрити меню', 'Close menu')}><i /><i /></button>
+      <nav className="menu__nav">
+        {NAV().map((item, i) => (
+          <a key={item} href="#" style={{ '--i': i }} onClick={onClose}>
+            {item}
+            <img src="/footer/nav-arrow.svg" alt="" />
+          </a>
+        ))}
+      </nav>
+      <div className="menu__row" style={{ '--i': 5 }}>
+        <LangToggle />
+        <a className="header__account" href="#">
+          <img src="/hero/login-light.svg" alt="" />
+          {t('Кабінет', 'Account')}
+        </a>
+      </div>
+      <a className="btn btn--primary menu__cta" href="#" style={{ '--i': 6 }}>{t('Залишити заявку', 'Apply now')}</a>
+      <div className="menu__socials" style={{ '--i': 7 }}>
+        {SOCIALS.map((s) => (
+          <a key={s} className="footer__social" href="#" aria-label={s} style={{ '--icon': `url(/footer/${s}.svg)` }}><i /></a>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Header() {
   const root = useRef(null)
+  const [menu, setMenu] = useState(false)
+  const closeMenu = useCallback(() => setMenu(false), [])
 
   useEffect(() => {
     const el = root.current
@@ -145,6 +192,7 @@ export default function Header() {
   }, [])
 
   return (
+    <>
     <header className="header" ref={root}>
       <span className="header__progress" aria-hidden="true" />
       {/* the mark turns a quarter clockwise on hover; a click glides to the top, no reload */}
@@ -163,6 +211,11 @@ export default function Header() {
         </a>
         <a className="btn btn--primary header__cta" href="#">{t('Залишити заявку', 'Apply now')}</a>
       </div>
+      <button className="header__dots" onClick={() => setMenu(true)} aria-label={t('Меню', 'Menu')} aria-expanded={menu}>
+        {Array.from({ length: 9 }, (_, i) => <i key={i} />)}
+      </button>
     </header>
+    <Menu open={menu} onClose={closeMenu} />
+    </>
   )
 }

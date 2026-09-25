@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import Arrow from './Arrow.jsx'
 import useReveal from './useReveal.js'
+import Swipe from './Swipe.jsx'
 import { t } from './i18n.js'
 import './media.css'
 
@@ -13,6 +14,7 @@ const POSTS = () => [
 
 export default function Media() {
   const root = useRef(null)
+  const row = useRef(null)
   useReveal(root)
 
   return (
@@ -21,7 +23,7 @@ export default function Media() {
       <h2 className="media__h2">{t('Медіа про Codex Energy', 'Codex Energy in the media')}</h2>
       <a className="media__all" href="#">{t('Усі публікації', 'All publications')}<Arrow /></a>
 
-      <div className="media__grid">
+      <div className="media__grid" ref={row}>
         {POSTS().map((p, i) => (
           <a key={p.source} className="post" href={p.href} target="_blank" rel="noreferrer" style={{ '--i': i }}>
             <span className="post__photo"><img src={p.photo} alt="" /></span>
@@ -30,6 +32,7 @@ export default function Media() {
           </a>
         ))}
       </div>
+      <Swipe target={row} />
     </section>
   )
 }

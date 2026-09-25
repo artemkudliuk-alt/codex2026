@@ -15,7 +15,8 @@ gsap.registerPlugin(SplitText)
 const FRAMES = 142 // Scrub_video.mp4, every 2nd frame, 1920x1080 WebP (+ a 1440 set)
 const FIRST = 10 // loaded under the preloader; the rest right after it, in order
 // screens that draw the canvas at most ~1500 device px wide get the 1440 frames (half the bytes)
-const frameSrc = (i, small) => `/seq/system/${small ? '1440/' : ''}${String(i + 1).padStart(3, '0')}.webp`
+// phones get their own portrait set: the centre 540 x 1080 of each frame (what a phone shows anyway)
+const frameSrc = (i, set) => `/seq/system/${set}${String(i + 1).padStart(3, '0')}.webp`
 const SCRUB_LENGTH = 800 // px the scene stays stuck; the video plays only here (client)
 
 // The centred copy types itself in, letter by letter, while the section slides in (its top
@@ -52,9 +53,10 @@ export default function System() {
 
     // Frames: load in order, draw the nearest loaded one at or below the target.
     const small = canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 2) <= 1500
+    const frameSet = units.mobile ? 'm/' : small ? '1440/' : ''
     const imgs = Array.from({ length: FRAMES }, () => new Image())
     const load = (from, to) => Promise.all(imgs.slice(from, to).map((img, k) =>
-      loadImage(img, frameSrc(from + k, small)).then(() => draw(current))))
+      loadImage(img, frameSrc(from + k, frameSet)).then(() => draw(current))))
     critical.push(load(0, FIRST))
     later(async () => {
       for (let i = FIRST; i < FRAMES; i += 8) await load(i, i + 8)

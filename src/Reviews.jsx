@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import useReveal from './useReveal.js'
+import Swipe from './Swipe.jsx'
 import { t } from './i18n.js'
 import './reviews.css'
 
@@ -21,6 +22,7 @@ const Chevron = ({ dir }) => (
 
 export default function Reviews() {
   const root = useRef(null)
+  const row = useRef(null)
   const [pos, setPos] = useState(N) // index into the tripled track, starts on the middle copy
   const [instant, setInstant] = useState(false)
   useReveal(root)
@@ -41,7 +43,7 @@ export default function Reviews() {
         <button className="reviews__btn reviews__btn--next" onClick={() => go(1)} aria-label={t('Наступний відгук', 'Next review')}><Chevron dir={1} /></button>
       </div>
 
-      <div className="reviews__viewport">
+      <div className="reviews__viewport" ref={row}>
         <div className={`reviews__track${instant ? ' is-instant' : ''}`} style={{ '--pos': pos }} onTransitionEnd={onEnd}>
           {[0, 1, 2].flatMap((copy) => REVIEWS().map((r, i) => (
             <article key={`${copy}-${i}`} className="review" style={{ '--i': i }} aria-hidden={copy !== 1 || undefined}>
@@ -55,6 +57,7 @@ export default function Reviews() {
           )))}
         </div>
       </div>
+      <Swipe target={row} />
     </section>
   )
 }

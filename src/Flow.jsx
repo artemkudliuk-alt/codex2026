@@ -160,7 +160,7 @@ export default function Flow() {
       })
       ScrollTrigger.create({
         trigger: el,
-        start: `top+=${HEADING_AFTER} top`,
+        start: units.mobile ? 'top 60%' : `top+=${HEADING_AFTER} top`, // phones: the heading leads, before the steps
         onEnter: () => showHeading(true),
         onLeaveBack: () => showHeading(false),
       })
