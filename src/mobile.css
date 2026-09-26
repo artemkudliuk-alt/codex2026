@@ -304,11 +304,15 @@
   .flow { height: calc(64 * var(--m) + 680 * var(--mu) + var(--stick)); }
   .flow__sticky { height: calc(64 * var(--m) + 680 * var(--mu)); }
   .flow__sticky { --t0: calc(64 * var(--m) - 34 * var(--mu)); }
-  .flow__cover { /* energy-m.mp4 is the centre 760 x 1080 of the stream, at the same scale as before */
-    left: calc(50% - 218 * var(--mu));
-    top: calc(var(--t0) + 40 * var(--mu)); /* the stream starts right under the subline */
-    width: calc(436 * var(--mu));
-    height: calc(620 * var(--mu));
+  /* energy-m.mp4 is the centre 760 x 1080 of the stream. Never narrower than the screen: when a
+     short screen shrinks the scene (--mu), the video grows to the full width around the same centre */
+  .flow__cover {
+    left: 50%;
+    top: calc(var(--t0) + 350 * var(--mu)); /* centre line of the stream band, under the subline */
+    width: max(calc(436 * var(--mu)), calc(100% + 2px));
+    height: auto;
+    aspect-ratio: 436 / 620;
+    translate: -50% -50%;
   }
   .flow__video { object-fit: cover; }
   .flow__scrim--left { display: none; }
