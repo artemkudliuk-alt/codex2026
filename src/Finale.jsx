@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Arrow from './Arrow.jsx'
 import { lenis } from './scroll.js'
 import { createFlames, createSparks } from './sparks.js'
-import { later, loadVideo } from './load.js'
+import { av1, later, loadVideo } from './load.js'
 import { t } from './i18n.js'
 import './finale.css'
 
@@ -72,7 +72,7 @@ export default function Finale() {
       <div className="finale__sun" aria-hidden="true">
         {/* 1280x720: it is shown blurred, a larger frame would only add bytes; loads last in the queue */}
         <video className="finale__video" poster="/video/sun-poster.webp" muted loop playsInline preload="none">
-          <source src="/video/sun.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"' />
+          {av1 && <source src="/video/sun.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"' />}
           <source src="/video/sun.mp4" type="video/mp4" />
         </video>
         <div className="finale__warm" />

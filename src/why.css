@@ -16,16 +16,28 @@
   width: calc(1000 * var(--uw));
   height: calc(1000 * var(--uw));
   opacity: 0.55;
-  background: linear-gradient(135deg, /* brand colours only, no white (client) */
-    var(--blue-500) 0%, var(--blue-300) 25%, var(--orange) 55%, var(--blue-300) 80%, var(--blue-500) 100%);
-  background-size: 250% 250%;
+  overflow: hidden;
   -webkit-mask: url(/why/mark-mask.svg) center / contain no-repeat;
   mask: url(/why/mark-mask.svg) center / contain no-repeat;
+}
+/* The flowing gradient is a 250% layer that slides (transform, on the GPU) instead of a moving
+   background-position (a 1000 px repaint every frame). Same picture: a 250% background moving
+   0% -> 100% is exactly this layer moving 0 -> -60% of its own size. */
+.why__mark::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 250%;
+  height: 250%;
+  background: linear-gradient(135deg, /* brand colours only, no white (client) */
+    var(--blue-500) 0%, var(--blue-300) 25%, var(--orange) 55%, var(--blue-300) 80%, var(--blue-500) 100%);
   animation: why-flow 7s ease-in-out infinite alternate;
+  will-change: transform;
 }
 @keyframes why-flow {
-  from { background-position: 0% 0%; }
-  to { background-position: 100% 100%; }
+  from { translate: 0 0; }
+  to { translate: -60% -60%; }
 }
 
 .why__intro { position: relative; }
@@ -134,5 +146,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .why__mark { animation: none; }
+  .why__mark::before { animation: none; }
 }

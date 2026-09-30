@@ -6,6 +6,7 @@ import { lenis, measure, units } from './scroll.js'
 import './hero.css'
 import Preloader from './Preloader.jsx'
 import Arrow from './Arrow.jsx'
+import { av1 } from './load.js'
 import { intro as introState, locale, t } from './i18n.js'
 
 // Figma 4:51 collage: card centre and size in design px, rotation,
@@ -75,6 +76,7 @@ export default function Hero() {
     const onLeave = () => { mx = my = 0 }
     const tick = () => {
       if (!active) return
+      if (Math.abs(mx - px) < 0.0005 && Math.abs(my - py) < 0.0005) return // settled: nothing to redraw
       px += (mx - px) * 0.1
       py += (my - py) * 0.1
       tilt.forEach((node, i) => {
@@ -231,7 +233,7 @@ export default function Hero() {
           {/* AV1 where the browser plays it (about half the bytes), H.264 otherwise */}
           {/* phones: the centre 720 x 1080 (every phone phase is portrait), about a third of the bytes */}
           <video poster={units.mobile ? '/video/hero-m-poster.webp' : '/video/hero-poster.webp'} autoPlay muted loop playsInline preload="auto">
-            <source src={units.mobile ? '/video/hero-m.av1.mp4' : '/video/hero.av1.mp4'} type='video/mp4; codecs="av01.0.08M.10"' />
+            {av1 && <source src={units.mobile ? '/video/hero-m.av1.mp4' : '/video/hero.av1.mp4'} type='video/mp4; codecs="av01.0.08M.10"' />}
             <source src={units.mobile ? '/video/hero-m.mp4' : '/video/hero.mp4'} type="video/mp4" />
           </video>
           <div className="hero__scrim hero__scrim--v" />

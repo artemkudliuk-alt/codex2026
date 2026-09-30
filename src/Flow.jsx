@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { units } from './scroll.js'
 import { createFlowGL } from './flowGL.js'
-import { later, loadVideo } from './load.js'
+import { av1, later, loadVideo } from './load.js'
 import './flow.css'
 import icon1 from './icons/step1.svg?raw'
 import icon2 from './icons/step2.svg?raw'
@@ -184,7 +184,7 @@ export default function Flow() {
           {/* preload none: it buffers in the load queue (load.js), after the hero and section 02 */}
           <video className="flow__video" muted loop playsInline preload="none" aria-hidden="true">
             {/* phones: the centre 760 x 1080, the part of the stream a phone shows */}
-            <source src={units.mobile ? '/video/energy-m.av1.mp4' : '/video/energy.av1.mp4'} type='video/mp4; codecs="av01.0.08M.10"' />
+            {av1 && <source src={units.mobile ? '/video/energy-m.av1.mp4' : '/video/energy.av1.mp4'} type='video/mp4; codecs="av01.0.08M.10"' />}
             <source src={units.mobile ? '/video/energy-m.mp4' : '/video/energy.mp4'} type="video/mp4" />
           </video>
           <canvas className="flow__canvas" aria-hidden="true" />

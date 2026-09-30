@@ -39,6 +39,9 @@ img, video { display: block; }
   white-space: nowrap;
 }
 
+/* off-screen sections (idle.js): endless animations wait, nothing on screen changes */
+.is-idle *, .is-idle *::before, .is-idle *::after { animation-play-state: paused !important; }
+
 /* language switch: a short navy curtain while the page remounts in the other language */
 body::after {
   content: '';

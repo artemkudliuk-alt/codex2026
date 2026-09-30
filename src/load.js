@@ -2,6 +2,14 @@
 // everything else waits in `later`, in page order (components register during mount, top to
 // bottom), and starts only once the critical set is in - so nothing competes with the hero.
 export const critical = []
+
+// AV1 only where the device decodes it in hardware: software AV1 at 1080p keeps a CPU core busy
+// for as long as a video plays (stutter on weaker machines). Others get the same video in H.264.
+// Asked once before the app renders (top-level await, a few ms).
+export const av1 = await (navigator.mediaCapabilities?.decodingInfo({
+  type: 'file',
+  video: { contentType: 'video/mp4; codecs="av01.0.08M.10"', width: 1920, height: 1080, bitrate: 3500000, framerate: 30 },
+}).then((r) => r.supported && r.powerEfficient) ?? false).catch(() => false)
 const queue = []
 let started = false
 let running = false

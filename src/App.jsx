@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { lenis } from './scroll.js'
 import { lang, onLang } from './i18n.js'
+import { pauseOffscreen } from './idle.js'
 import Header from './Header.jsx'
 import Hero from './Hero.jsx'
 import System from './System.jsx'
@@ -19,6 +20,8 @@ import Finale from './Finale.jsx'
 export default function App() {
   const [current, setCurrent] = useState(lang)
   const restore = useRef(null)
+
+  useEffect(pauseOffscreen, [current]) // re-observe the remounted sections after a language switch
 
   useEffect(() => onLang((next) => {
     restore.current = window.scrollY
