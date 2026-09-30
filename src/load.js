@@ -1,7 +1,6 @@
-// Loading order. The preloader waits for `critical` (plus fonts, window load and the hero video);
+// Loading order. The preloader waits only for fonts and the hero video's first frames;
 // everything else waits in `later`, in page order (components register during mount, top to
-// bottom), and starts only once the critical set is in - so nothing competes with the hero.
-export const critical = []
+// bottom), and starts once those are in - so nothing competes with the hero.
 
 // AV1 only where the device decodes it in hardware: software AV1 at 1080p keeps a CPU core busy
 // for as long as a video plays (stutter on weaker machines). Others get the same video in H.264.

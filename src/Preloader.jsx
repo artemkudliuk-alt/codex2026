@@ -1,11 +1,11 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { MARK_PATHS } from './logoPaths.js'
-import { critical, startQueue } from './load.js'
+import { startQueue } from './load.js'
 import './preloader.css'
 
 // Preloader - the Renuvion mechanic (C:\nextweb\renuvion\site\src\components\preloader.tsx):
 // 1. the logo outline draws itself;
-// 2. the letters fill bottom-up as the page really loads (fonts, window load, the hero video),
+// 2. the letters fill bottom-up as the first screen really loads (fonts, the hero video's first frames),
 //    never faster than the drawing (MIN_MS) and never held longer than MAX_MS;
 // 3. fly-through: the shapes turn into windows cut in the navy (a mask), the page shows through
 //    them, and the mark rushes into its own centre - the solid middle of the cross - until it
@@ -19,16 +19,13 @@ const MIN_MS = 1900
 const MAX_MS = 9000
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
-// the hero plus the page's critical set (load.js); once they are in, the rest starts loading
+// only what the first screen needs: fonts and the hero video able to start (not play through -
+// it keeps buffering while it plays, the poster sits under it). Everything else loads after.
 function trackAssets(onProgress) {
-  const tasks = [
-    ...critical,
-    document.fonts?.ready ?? Promise.resolve(),
-    document.readyState === 'complete' ? Promise.resolve() : new Promise((r) => window.addEventListener('load', r, { once: true })),
-  ]
+  const tasks = [document.fonts?.ready ?? Promise.resolve()]
   document.querySelectorAll('video[autoplay]').forEach((v) => {
     tasks.push(v.readyState >= 3 ? Promise.resolve() : new Promise((r) => {
-      v.addEventListener('canplaythrough', r, { once: true })
+      v.addEventListener('canplay', r, { once: true })
       v.addEventListener('error', r, { once: true })
     }))
   })
@@ -92,7 +89,7 @@ export default function Preloader({ onReveal, onDone }) {
     let last = start
     let raf = 0
     let exiting = false
-    // after this commit's layout effects: the sections below register their critical assets
+    // after this commit's layout effects: the hero video element is in the DOM
     queueMicrotask(() => trackAssets((p) => { loaded = p }))
 
     const exit = () => {

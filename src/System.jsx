@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { units } from './scroll.js'
-import { critical, later, loadImage } from './load.js'
+import { later, loadImage } from './load.js'
 import './system.css'
 import { locale, t } from './i18n.js'
 
@@ -13,7 +13,7 @@ gsap.registerPlugin(SplitText)
 // (ImageSequence + StickySection): frames drawn on a canvas, sticky scene, text revealed
 // by time once a progress threshold is crossed, so it keeps up with any scroll speed.
 const FRAMES = 142 // Scrub_video.mp4, every 2nd frame, 1920x1080 WebP (+ a 1440 set)
-const FIRST = 10 // loaded under the preloader; the rest right after it, in order
+const FIRST = 10 // first in the queue after the preloader; the rest after them, in order
 // screens that draw the canvas at most ~1500 device px wide get the 1440 frames (half the bytes)
 // phones get their own portrait set: the centre 540 x 1080 of each frame (what a phone shows anyway)
 const frameSrc = (i, set) => `/seq/system/${set}${String(i + 1).padStart(3, '0')}.webp`
@@ -57,7 +57,7 @@ export default function System() {
     const imgs = Array.from({ length: FRAMES }, () => new Image())
     const loadList = (list) => Promise.all(list.map((i) => loadImage(imgs[i], frameSrc(i, frameSet)).then(() => draw(current))))
     const load = (from, to) => loadList(Array.from({ length: Math.min(to, FRAMES) - from }, (_, k) => from + k))
-    critical.push(load(0, FIRST))
+    later(() => load(0, FIRST))
     // Every 2nd frame first: the scrub already plays through (draw() takes the nearest loaded
     // frame below), then the in-between frames go to the end of the queue, after section 03's video.
     const byEight = async (list) => { for (let i = 0; i < list.length; i += 8) await loadList(list.slice(i, i + 8)) }
