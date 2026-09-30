@@ -157,6 +157,7 @@ export default function Projects() {
       </div>
 
       <div className="proj__partners">
+        <p className="proj__partners-label">{t('Партнери', 'Partners')}</p>
         <img src="/projects/ribas.svg" alt="RIBAS Hotels Group" />
         <img src="/projects/kness.svg" alt="KNESS" />
         <img src="/projects/unisolar.svg" alt="Unisolar" />

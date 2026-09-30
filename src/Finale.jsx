@@ -87,7 +87,7 @@ export default function Finale() {
 
       <section className="cta">
         <h2 className="cta__h2 rise">{t(<>Отримайте частку в енергетичному<br />інфраструктурному активі</>, <>Get a share in an energy<br />infrastructure asset</>)}</h2>
-        <p className="cta__sub rise">{t(<>Орієнтовна дохідність 16-20% річних*<br />Перші дивіденди - І квартал 2027</>, <>Estimated return 16-20% per year*<br />First dividends - Q1 2027</>)}</p>
+        <p className="cta__sub rise">{t('Орієнтовна дохідність 16-20% річних*', 'Estimated return 16-20% per year*')}</p>
         <p className="cta__note rise">{t('*Розрахунок є орієнтовним та не гарантує фактичний дохід.', '*The estimate is indicative and does not guarantee actual income.')}</p>
         <div className="cta__row rise">
           <a className="cta__btn cta__btn--primary" href="#">{t('Стати співвласником', 'Become a co-owner')}<span className="cta__circ"><Arrow /></span></a>
