@@ -166,12 +166,12 @@
   position: relative;
   z-index: 3;
   background: linear-gradient(180deg, rgb(35 48 94 / 0) 55%, rgb(35 48 94 / 0.55) 100%); /* depth in brand navy-800 */
-  height: calc(1080 * var(--uw));
+  height: calc(990 * var(--uw)); /* 1080 - 90: the tiles sit right under the sun (client: no gap) */
 }
 .footer__nav {
   position: absolute;
   left: 0;
-  top: calc(306 * var(--uw));
+  top: calc(216 * var(--uw));
   width: 100%;
   height: calc(214 * var(--uw));
   display: grid;
@@ -225,7 +225,7 @@
 .footer__contacts {
   position: absolute;
   left: calc(128 * var(--uw));
-  top: calc(599 * var(--uw));
+  top: calc(509 * var(--uw));
   display: flex;
   gap: calc(60 * var(--uw));
   font-size: calc(23 * var(--uw));
@@ -239,7 +239,7 @@
 .footer__socials {
   position: absolute;
   right: calc(106 * var(--uw));
-  top: calc(581 * var(--uw));
+  top: calc(491 * var(--uw));
   display: flex;
   gap: calc(10 * var(--uw));
 }
@@ -265,7 +265,7 @@
 .footer__disclaimer {
   position: absolute;
   left: calc(128 * var(--uw));
-  top: calc(683 * var(--uw));
+  top: calc(593 * var(--uw));
   width: calc(833 * var(--uw));
   font-size: calc(18 * var(--uw));
   line-height: 1.6;
@@ -274,7 +274,7 @@
 .footer__legal,
 .footer__credit {
   position: absolute;
-  top: calc(994 * var(--uw));
+  top: calc(904 * var(--uw));
   z-index: 1;
   font-size: calc(16 * var(--uw)); /* the credit's size for the whole line (client) */
   font-weight: 500;
@@ -320,7 +320,7 @@
 .footer__mark {
   position: absolute;
   left: calc(1560 * var(--uw)); /* centre near the corner, as the layout crop */
-  top: calc(740 * var(--uw));
+  top: calc(650 * var(--uw));
   width: calc(600 * var(--uw));
   height: calc(600 * var(--uw));
   animation: mark-turn 20s linear infinite;
